@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NOIR | Premium Shopping</title>
+
+<link rel="stylesheet" href="style.css?v=3.5">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- Cursor Glow -->
+
+<div class="cursor-glow"></div>
+
+<!-- ================= NAVBAR ================= -->
+
+<header>
+
+<nav>
+
+<a href="index.html" class="logo">
+
+NOIR.
+
+</a>
+
+<ul>
+
+<li><a href="index.html" class="active">Home</a></li>
+
+<li><a href="products.html">Products</a></li>
+
+<li><a href="#collections">Collections</a></li>
+
+<li><a href="sell.html">Sell</a></li>
+
+<li><a href="contact.html">Contact</a></li>
+
+</ul>
+
+<!-- Search -->
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search Products...">
+
+<i class="fas fa-search"></i>
+
+</div>
+
+<!-- Wishlist -->
+
+<a href="wishlist.html" class="wishlist-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+
+<i class="fas fa-heart"></i>
+
+</a>
+
+<!-- Cart -->
+
+<a href="cart.html" class="cart-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+
+<i class="fas fa-shopping-cart"></i>
+
+<span class="cart-count">
+
+0
+
+</span>
+
+</a>
+
+<!-- Login/Profile -->
+
+<div id="account-area">
+
+<a href="login.html"
+id="loginButton"
+class="login-btn">
+
+Login
+
+</a>
+
+<div id="profileMenu"
+style="display:none;">
+
+<div class="profile-icon">
+<i class="fas fa-user"></i>
+</div>
+
+<div class="profile-dropdown">
+  <div style="padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+    <div class="dropdown-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #222; border: 1.5px solid rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 20px; color: #fff;">
+      <i class="fas fa-user"></i>
+    </div>
+    <h3 id="userName" style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 4px 0 0 0;">Guest</h3>
+    <p id="userEmail" style="color: #888888; font-size: 11px; margin: 0; word-break: break-all;">guest@email.com</p>
+  </div>
+  <a href="profile.html">👤 My Profile</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="wishlist.html">❤️ Wishlist</a>
+  <a href="#">⚙ Settings</a>
+  <a href="#" id="logoutBtn">🚪 Logout</a>
+</div>
+
+</div>
+
+</div>
+
+</nav>
+
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" style="display: flex; align-items: center; justify-content: space-between; padding: 120px 10% 80px 10%; min-height: 100vh; background: radial-gradient(circle at 80% 20%, rgba(100, 50, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 10% 80%, rgba(255, 170, 0, 0.08) 0%, transparent 40%), #0b0b0f; position: relative; overflow: hidden; flex-wrap: wrap; gap: 50px;">
+  <!-- Animated Background Shapes -->
+  <div style="position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(100, 50, 255, 0.18) 0%, transparent 70%); top: 15%; right: 10%; filter: blur(50px); pointer-events: none; animation: floatAnim 10s ease-in-out infinite alternate;"></div>
+  <div style="position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(255, 170, 0, 0.06) 0%, transparent 70%); bottom: 10%; left: 5%; filter: blur(60px); pointer-events: none; animation: floatAnim 12s ease-in-out infinite alternate-reverse;"></div>
+
+  <div class="hero-text-container" style="flex: 1; min-width: 320px; text-align: left; z-index: 2;">
+    <span style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; padding: 6px 16px; border-radius: 30px; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; display: inline-block; margin-bottom: 20px; border: 1px solid rgba(255,170,0,0.2);">EST. 2026</span>
+    <h1 style="font-size: 58px; font-weight: 800; line-height: 1.15; color: #fff; margin-bottom: 24px; font-family: 'Poppins', sans-serif; letter-spacing: -1.5px;">
+      Luxury Shopping <br>
+      <span style="background: linear-gradient(135deg, #ffaa00 0%, #ff5500 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Reimagined</span>
+    </h1>
+    <p style="font-size: 18px; color: #aaa; line-height: 1.6; margin-bottom: 40px; max-width: 480px; font-weight: 400;">
+      Discover curated high-end fashion, state-of-the-art electronics, and premium home lifestyle products crafted for the modern shopper.
+    </p>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+      <a href="products.html" class="glow-btn" style="padding: 16px 36px; border-radius: 12px; font-weight: 600; text-decoration: none; font-size: 15px; transition: all 0.3s; background: #fff; color: #000; box-shadow: 0 10px 25px rgba(255,255,255,0.1);">Shop Collection</a>
+      <a href="#collections" style="padding: 16px 36px; border-radius: 12px; font-weight: 600; text-decoration: none; font-size: 15px; transition: all 0.3s; background: rgba(255,255,255,0.04); color: #fff; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px);">Explore Trends</a>
+    </div>
+  </div>
+
+  <div class="hero-showcase-container" style="flex: 1; min-width: 320px; display: flex; justify-content: center; align-items: center; position: relative; z-index: 2;">
+    <!-- Floating Product Card -->
+    <div class="floating-hero-card" style="width: 340px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 30px; padding: 25px; backdrop-filter: blur(20px); box-shadow: 0 30px 60px rgba(0,0,0,0.4); text-align: left; transition: all 0.5s ease; position: relative; animation: floatCard 6s ease-in-out infinite;">
+      <div style="position: absolute; top: 25px; right: 25px; background: rgba(255,255,255,0.08); color: #fff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);">TRENDING</div>
+      <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" alt="Sony Headphones" style="width: 100%; height: 260px; object-fit: cover; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.3);">
+      <h3 style="color: #fff; font-size: 18px; font-weight: 600; margin-bottom: 6px;">Sony WH-1000XM4</h3>
+      <p style="color: #ffaa00; font-size: 15px; font-weight: 700; margin: 0 0 15px 0;">₹24,999 <span style="font-size:12px; color:#888; text-decoration: line-through; margin-left: 6px;">₹29,999</span></p>
+      <a href="product/product-21.html" style="display: block; width: 100%; text-align: center; background: #fff; color: #000; padding: 12px; border-radius: 12px; font-weight: 600; text-decoration: none; font-size: 13.5px; transition: 0.3s; border: none; cursor: pointer;">View Details</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features">
+
+    <div class="feature shadow-hover">
+        <i class="fa-solid fa-truck-fast"></i>
+        <h2>Fast Delivery</h2>
+        <p>Free express delivery on orders above ₹999 across India.</p>
+    </div>
+
+    <div class="feature shadow-hover">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h2>Secure Payment</h2>
+        <p>100% secure payments with UPI, Cards and Net Banking.</p>
+    </div>
+
+    <div class="feature shadow-hover">
+        <i class="fa-solid fa-arrow-rotate-left"></i>
+        <h2>Easy Returns</h2>
+        <p>7-day hassle-free return and replacement policy.</p>
+    </div>
+
+    <div class="feature shadow-hover">
+        <i class="fa-solid fa-gift"></i>
+        <h2>Rewards</h2>
+        <p>Earn reward points every time you shop with NOIR.</p>
+    </div>
+
+</section>
+
+<!-- ================= COLLECTION ================= -->
+
+<section class="collection" id="collections">
+
+    <h2>Featured Collections</h2>
+
+    <div class="collection-grid">
+
+        <div class="collection-card" onclick="window.location.href='products.html?category=Fashion'">
+            <h3>Premium Sneakers</h3>
+        </div>
+
+        <div class="collection-card" onclick="window.location.href='products.html?category=Fashion'">
+            <h3>Luxury Watches</h3>
+        </div>
+
+        <div class="collection-card" onclick="window.location.href='products.html?category=Electronics'">
+            <h3>Smart Gadgets</h3>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= TRENDING ================= -->
+
+<section class="trending">
+
+    <h2>Trending This Week</h2>
+
+    <div class="trend-grid">
+
+        <div class="trend-card shadow-hover" onclick="window.location.href='products.html?category=Fashion'">
+            <h3>Summer Collection</h3>
+            <p>Starting from ₹999 with premium quality.</p>
+        </div>
+
+        <div class="trend-card shadow-hover" onclick="window.location.href='products.html?category=Electronics'">
+            <h3>Gaming Accessories</h3>
+            <p>Flat 30% OFF on selected gaming gear.</p>
+        </div>
+
+        <div class="trend-card shadow-hover" onclick="window.location.href='products.html?category=Fashion'">
+            <h3>Minimal Fashion</h3>
+            <p>Latest arrivals with exclusive launch offers.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= BEST SELLERS ================= -->
+
+<section class="collection">
+
+    <h2>Best Sellers</h2>
+
+    <div class="trend-grid" id="bestSellersGrid">
+        <!-- Dynamic Best Sellers will load here -->
+    </div>
+
+</section>
+
+<!-- ================= FLASH SALE ================= -->
+
+<section class="sale">
+
+    <h1>⚡ FLASH SALE</h1>
+
+    <p>
+        Up to <strong>60% OFF</strong> on premium products.
+        Limited-time deals available today.
+    </p>
+
+    <a href="products.html" class="glow-btn">
+        Shop Sale
+    </a>
+
+</section>
+
+
+
+
+<!-- ================= CUSTOMER REVIEWS ================= -->
+
+<section class="reviews">
+
+    <h2>What Our Customers Say</h2>
+
+    <div class="review-grid">
+
+        <div class="review shadow-hover">
+            <p>
+                NOIR has one of the best shopping experiences I've had.
+                Fast delivery and premium quality products.
+            </p>
+
+            <h4>⭐⭐⭐⭐⭐</h4>
+
+            <strong>- Rahul Sharma</strong>
+        </div>
+
+        <div class="review shadow-hover">
+            <p>
+                Beautiful website, easy checkout and genuine products.
+                The packaging was excellent.
+            </p>
+
+            <h4>⭐⭐⭐⭐⭐</h4>
+
+            <strong>- Priya Verma</strong>
+        </div>
+
+        <div class="review shadow-hover">
+            <p>
+                Premium experience from browsing to delivery.
+                Highly recommended for online shopping.
+            </p>
+
+            <h4>⭐⭐⭐⭐⭐</h4>
+
+            <strong>- Arjun Patel</strong>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="newsletter">
+    <h2>Become a NOIR Member</h2>
+    <p>
+        Subscribe and receive exclusive deals,
+        early access to new collections,
+        reward points and premium member offers.
+    </p>
+    <div style="margin-top:30px;">
+        <input type="email" id="newsletterEmail" placeholder="Enter your email address" style="padding: 14px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color:#fff; font-size: 14px; outline:none; width: 280px; max-width: 100%; margin-right: 10px;">
+        <button class="glow-btn" onclick="openSubscriptionModal()">
+            Subscribe
+        </button>
+    </div>
+</section>
+
+<!-- SUBSCRIPTION PLANS MODAL -->
+<div id="subscriptionModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(15px); z-index:99999; justify-content:center; align-items:center; padding: 20px;">
+    <div class="glass" style="width:90%; max-width:500px; background:#111; border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:35px; color:#fff; text-align:center; position:relative; box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+        <button onclick="closeSubscriptionModal()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:#aaa; font-size:22px; cursor:pointer;">&times;</button>
+        <h2 style="font-size:24px; font-weight:700; margin-bottom:5px; color:#fff;">Noir Club Membership</h2>
+        <p style="color:#888; font-size:13px; margin-bottom:25px;">Activate premium access to member-only discounts</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
+            <!-- Monthly Plan -->
+            <div id="planMonthly" onclick="selectSubPlan('monthly')" style="border: 2px solid #ffaa00; background: rgba(255, 170, 0, 0.05); padding: 18px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s;">
+                <div style="text-align: left;">
+                    <strong style="display: block; font-size: 15px; color: #fff;">Monthly Membership</strong>
+                    <span style="font-size: 12px; color: #888;">Billed monthly. Cancel anytime.</span>
+                </div>
+                <div style="text-align: right;">
+                    <strong style="font-size: 18px; color: #ffaa00;">₹99</strong>
+                    <span style="font-size: 11px; color: #888; display: block;">/month</span>
+                </div>
+            </div>
+            
+            <!-- Yearly Plan -->
+            <div id="planYearly" onclick="selectSubPlan('yearly')" style="border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); padding: 18px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s;">
+                <div style="text-align: left;">
+                    <strong style="display: block; font-size: 15px; color: #fff;">Yearly Membership</strong>
+                    <span style="font-size: 12px; color: #888;">Save 60% with annual billing.</span>
+                </div>
+                <div style="text-align: right;">
+                    <strong style="font-size: 18px; color: #2ecc71;">₹499</strong>
+                    <span style="font-size: 11px; color: #888; display: block;">/year</span>
+                </div>
+            </div>
+        </div>
+        
+        <button class="glow-btn" onclick="paySubscription()" style="width: 100%; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 14.5px; background:#fff; color:#000;">
+            Pay <span id="subPlanPrice">₹99</span> & Activate
+        </button>
+    </div>
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div>
+
+            <h3>NOIR.</h3>
+
+            <p>
+
+                Premium Shopping for Fashion,
+                Electronics and Lifestyle Products.
+
+            </p>
+
+        </div>
+
+        <div>
+
+            <h4>Quick Links</h4>
+
+            <p>Home</p>
+            <p>Products</p>
+            <p>Orders</p>
+            <p>Wishlist</p>
+            <p>Rewards</p>
+
+        </div>
+
+        <div>
+
+            <h4>Customer Support</h4>
+
+            <p>Email Support</p>
+
+            <p>Live Chat</p>
+
+            <p>Track Order</p>
+
+            <p>Returns & Refunds</p>
+
+            <p>Privacy Policy</p>
+
+        </div>
+
+        <div>
+
+            <h4>Follow Us</h4>
+
+            <a href="#">
+                <i class="fab fa-facebook"></i>
+            </a>
+
+            <a href="#">
+                <i class="fab fa-instagram"></i>
+            </a>
+
+            <a href="#">
+                <i class="fab fa-twitter"></i>
+            </a>
+
+            <a href="#">
+                <i class="fab fa-linkedin"></i>
+            </a>
+
+            <a href="#">
+                <i class="fab fa-youtube"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <p class="copy">
+
+        © 2026 NOIR Premium Shopping.
+        All Rights Reserved.
+
+    </p>
+
+</footer>
+
+<!-- ================= SCROLL BUTTON ================= -->
+
+<button id="scrollTop">
+
+<i class="fas fa-arrow-up"></i>
+
+</button>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script src="script.js?v=3.5"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const grid = document.getElementById("bestSellersGrid");
+    if (!grid) return;
+
+    // Filter to get items tagged as BEST SELLER
+    const bestSellers = (window.PRODUCTS || []).filter(p => p.tag === "BEST SELLER").slice(0, 3);
+
+    bestSellers.forEach(product => {
+        const discountPct = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+        const discountText = discountPct > 0 ? `<span class="discount">${discountPct}% OFF</span>` : "";
+        
+        let starsHtml = "";
+        const fullStars = Math.floor(product.rating);
+        for (let i = 0; i < 5; i++) {
+            if (i < fullStars) starsHtml += "★";
+            else starsHtml += "☆";
+        }
+
+        const cardHtml = `
+        <div class="product-card" onclick="window.location.href='product-${product.id}.html'" style="cursor: pointer;">
+            <button class="wishlist-btn" onclick="event.stopPropagation(); toggleHomeWishlist(event, '${product.id}')"><i class="fa-solid fa-heart"></i></button>
+            <img src="${product.images[0]}" alt="${product.name}">
+            <div class="product-info" style="text-align: left;">
+                <h3 style="color:#111; margin-top:10px; font-size: 16px; font-weight: 600;">${product.name}</h3>
+                <div class="price" style="color:#000; font-size:16px; font-weight:700; margin: 10px 0;">
+                    ₹${product.price.toLocaleString("en-IN")}
+                    <span class="old-price" style="font-size: 12px; text-decoration: line-through; color: #888; margin-left: 5px;">₹${product.originalPrice.toLocaleString("en-IN")}</span>
+                    ${discountText}
+                </div>
+                <div class="rating" style="color: #ffaa00; font-size:12px; margin-bottom: 8px;">
+                    ${starsHtml} <span style="color:#777;">(${product.rating})</span>
+                </div>
+                <p class="delivery" style="font-size: 11.5px; color:#27ae60; margin-bottom:12px; font-weight: 500;">
+                    🚚 ${product.delivery}
+                </p>
+                <button class="buy-btn" onclick="event.stopPropagation(); handleHomeAddToCart(event, '${product.id}')" style="width: 100%;">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+        `;
+        grid.insertAdjacentHTML("beforeend", cardHtml);
+    });
+
+    window.handleHomeAddToCart = function(event, id) {
+        const product = (window.PRODUCTS || []).find(p => p.id.toString() === id.toString());
+        if (product) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const idx = cart.findIndex(item => item.name === product.name);
+            if (idx !== -1) cart[idx].qty += 1;
+            else cart.push({ name: product.name, price: product.price, image: product.images[0], qty: 1 });
+            
+            localStorage.setItem("cart", JSON.stringify(cart));
+            
+            const badges = document.querySelectorAll(".cart-count");
+            const count = cart.reduce((a, b) => a + b.qty, 0);
+            badges.forEach(b => b.innerText = count);
+
+            if (window.showToast) window.showToast("🛒 Added to Cart!");
+            else alert("🛒 Added to Cart!");
+        }
+    };
+
+    window.toggleHomeWishlist = function(event, id) {
+        const heartIcon = event.currentTarget.querySelector("i");
+        heartIcon.style.color = heartIcon.style.color === "red" ? "" : "red";
+        
+        let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+        const product = (window.PRODUCTS || []).find(p => p.id.toString() === id.toString());
+        
+        if (product) {
+            const idx = wishlist.findIndex(item => item.name === product.name);
+            if (idx !== -1) wishlist.splice(idx, 1);
+            else wishlist.push({ name: product.name, price: product.price, image: product.images[0] });
+            localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        }
+    };
+
+    let selectedPlan = "monthly";
+
+    window.openSubscriptionModal = function() {
+        const emailInput = document.getElementById("newsletterEmail");
+        const email = emailInput ? emailInput.value.trim() : "";
+        if (!email || !email.includes("@")) {
+            alert("❌ Please enter a valid email address!");
+            return;
+        }
+        document.getElementById("subscriptionModal").style.display = "flex";
+    };
+
+    window.closeSubscriptionModal = function() {
+        document.getElementById("subscriptionModal").style.display = "none";
+    };
+
+    window.selectSubPlan = function(plan) {
+        selectedPlan = plan;
+        const monthlyCard = document.getElementById("planMonthly");
+        const yearlyCard = document.getElementById("planYearly");
+        const priceLabel = document.getElementById("subPlanPrice");
+
+        if (plan === "monthly") {
+            monthlyCard.style.borderColor = "#ffaa00";
+            monthlyCard.style.background = "rgba(255, 170, 0, 0.05)";
+            yearlyCard.style.borderColor = "rgba(255,255,255,0.08)";
+            yearlyCard.style.background = "rgba(255,255,255,0.02)";
+            priceLabel.innerText = "₹99";
+        } else {
+            yearlyCard.style.borderColor = "#2ecc71";
+            yearlyCard.style.background = "rgba(46,204,113,0.05)";
+            monthlyCard.style.borderColor = "rgba(255,255,255,0.08)";
+            monthlyCard.style.background = "rgba(255,255,255,0.02)";
+            priceLabel.innerText = "₹499";
+        }
+    };
+
+    window.paySubscription = function() {
+        const amt = selectedPlan === "monthly" ? "₹99" : "₹499";
+        alert(`💳 Redirecting to checkout for ${selectedPlan} membership (${amt})...\nPayment of ${amt} successful! Welcome to the Noir Premium Club!`);
+        closeSubscriptionModal();
+        if (document.getElementById("newsletterEmail")) {
+            document.getElementById("newsletterEmail").value = "";
+        }
+    };
+});
+</script>
+
+</body>
+
+</html>

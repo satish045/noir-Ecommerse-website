@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NOIR | Cart</title>
+
+<link rel="stylesheet" href="style.css?v=3.5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header>
+<nav>
+<a href="index.html" class="logo">NOIR.</a>
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="products.html">Products</a></li>
+<li><a href="index.html#collections">Collections</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+
+<!-- Wishlist Link -->
+<a href="wishlist.html" class="wishlist-icon" style="color:white; text-decoration:none; margin-left:auto; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-heart"></i>
+</a>
+
+<!-- Cart Link -->
+<a href="cart.html" class="cart-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-shopping-cart"></i>
+<span class="cart-count">0</span>
+</a>
+
+<!-- Login/Profile -->
+<div id="account-area">
+<a href="login.html" id="loginButton" class="login-btn">Login</a>
+
+<div id="profileMenu" style="display:none; position:relative;">
+<div class="profile-icon">
+<i class="fas fa-user"></i>
+</div>
+
+<div class="profile-dropdown">
+  <div style="padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+    <div class="dropdown-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #222; border: 1.5px solid rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 20px; color: #fff;">
+      <i class="fas fa-user"></i>
+    </div>
+    <h3 id="userName" style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 4px 0 0 0;">Guest</h3>
+    <p id="userEmail" style="color: #888888; font-size: 11px; margin: 0; word-break: break-all;">guest@email.com</p>
+  </div>
+  <a href="profile.html">👤 My Profile</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="wishlist.html">❤️ Wishlist</a>
+  <a href="#">⚙ Settings</a>
+  <a href="#" id="logoutBtn">🚪 Logout</a>
+</div>
+</div>
+</div>
+
+</nav>
+</header>
+
+<!-- ================= CART SECTION ================= -->
+<section class="cart-page">
+
+<h1 class="text-center mt-40">Your Shopping Cart</h1>
+
+<div class="cart-container" id="cartContainer">
+
+<!-- Items will load here -->
+
+</div>
+
+<!-- TOTAL -->
+<div class="cart-summary">
+
+<h2>Total</h2>
+
+<h1 id="cartTotal">₹0</h1>
+
+<button class="buy-btn" id="checkoutBtn">
+Proceed to Checkout
+</button>
+
+</div>
+
+</section>
+
+<script src="script.js?v=3.5"></script>
+
+<!-- ================= CART RENDER SCRIPT ================= -->
+<script>
+function renderCart() {
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let container = document.getElementById("cartContainer");
+    let totalEl = document.getElementById("cartTotal");
+
+    container.innerHTML = "";
+
+    let total = 0;
+
+    if (cart.length === 0) {
+        container.innerHTML = `
+            <h2 style="text-align:center; color:#777; margin-top:50px;">
+                🛒 Your cart is empty
+            </h2>
+        `;
+        totalEl.innerText = "₹0";
+        return;
+    }
+
+    cart.forEach((item, index) => {
+
+        total += item.price * item.qty;
+
+        container.innerHTML += `
+        <div class="product-card shadow-hover">
+
+            <img src="${item.image}" alt="product">
+
+            <div class="product-info">
+
+                <h3>${item.name}</h3>
+
+                <p>Price: ₹${item.price}</p>
+
+                <div class="flex align-center mt-20">
+
+                    <button onclick="decreaseQty(${index})">-</button>
+
+                    <span style="margin:0 10px;">${item.qty}</span>
+
+                    <button onclick="increaseQty(${index})">+</button>
+
+                </div>
+
+                <button onclick="removeItem(${index})" class="buy-btn" style="margin-top:15px;background:red;">
+                    Remove
+                </button>
+
+            </div>
+        </div>
+        `;
+    });
+
+    totalEl.innerText = "₹" + total;
+
+    // update badge
+    document.querySelector(".cart-count").innerText = cart.reduce((a,b)=>a+b.qty,0);
+}
+
+function increaseQty(i) {
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    cart[i].qty++;
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+function decreaseQty(i) {
+    let cart = JSON.parse(localStorage.getItem("cart"));
+
+    if (cart[i].qty > 1) {
+        cart[i].qty--;
+    } else {
+        cart.splice(i, 1);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+function removeItem(i) {
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    cart.splice(i, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderCart();
+    
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener("click", () => {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart.length === 0) {
+                alert("🛒 Your cart is empty!");
+                return;
+            }
+            const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+            if (!isLoggedIn) {
+                alert("🔒 Please login to proceed to checkout.");
+                window.location.href = "login.html";
+                return;
+            }
+            window.location.href = "checkout.html";
+        });
+    }
+});
+</script>
+
+</body>
+</html>

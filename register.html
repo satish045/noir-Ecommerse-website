@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>NOIR | Register</title>
+
+<link rel="stylesheet" href="style.css?v=3.5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Password Wrapper & Toggle Styling */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: #888;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  transition: color 0.2s;
+}
+.password-toggle:hover {
+  color: #fff;
+}
+
+/* Password Strength Indicator */
+.strength-container {
+  width: 100%;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  text-align: left;
+  display: none;
+}
+.strength-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  background: #ff4d4d;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+.strength-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: #ff4d4d;
+}
+
+/* Validation Checklist */
+.val-checklist {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 20px;
+  font-size: 11px;
+  color: #666;
+  list-style: none;
+  padding-left: 5px;
+  display: none;
+}
+.val-item {
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.3s;
+}
+.val-item.valid {
+  color: #00ff66;
+}
+.val-icon {
+  font-size: 10px;
+}
+
+/* Premium Loader Overlay */
+.loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.loader-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.ring-loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.05);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  margin-bottom: 20px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.loader-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.success-checkmark {
+  display: none;
+  font-size: 44px;
+  color: #00ff66;
+  margin-bottom: 15px;
+  animation: scaleIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes scaleIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+/* Divider styling */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #666;
+  margin: 15px 0;
+  font-size: 13px;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #3c4043;
+}
+.divider:not(:empty)::before {
+  margin-right: .5em;
+}
+.divider:not(:empty)::after {
+  margin-left: .5em;
+}
+
+/* Google Sign-in button */
+.google-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 14px !important;
+  font-size: 14px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.3s ease !important;
+  margin-top: 10px;
+  width: 100%;
+}
+.google-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-2px);
+}
+.google-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Avatar Option highlight */
+.avatar-option.active {
+  border-color: #ffaa00 !important;
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 170, 0, 0.4);
+}
+.avatar-option:hover {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* OTP Verification Modal Overlay */
+.otp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 15, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.otp-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* OTP Box styling */
+.otp-box {
+  width: 90%;
+  max-width: 400px;
+  padding: 40px 30px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalScale {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.otp-box h2 {
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.otp-box p.subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+/* Digit Input Fields Container */
+.otp-inputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 25px;
+}
+
+.otp-inputs input {
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #fff !important;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.otp-inputs input:focus {
+  border-color: #ffaa00 !important;
+  box-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.otp-resend {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 15px;
+}
+
+.otp-resend a {
+  color: #ffaa00;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.otp-resend a.disabled {
+  color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Custom compact register box styles to reduce height */
+.login-box {
+  padding: 25px 30px !important;
+  max-width: 440px;
+  width: 100%;
+}
+.login-box h1 {
+  font-size: 24px !important;
+  margin-bottom: 5px !important;
+}
+.login-box p.subtitle {
+  font-size: 12px !important;
+  margin-bottom: 15px !important;
+}
+.login-box input {
+  padding: 10px 15px !important;
+  margin-bottom: 10px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+}
+.password-toggle {
+  top: 10px !important;
+  right: 12px !important;
+}
+.strength-container {
+  margin-top: -5px !important;
+  margin-bottom: 10px !important;
+}
+.val-checklist {
+  margin-bottom: 10px !important;
+}
+.avatar-title {
+  margin: 10px 0 5px 0 !important;
+  font-size: 12px !important;
+}
+.avatar-selector {
+  margin-bottom: 12px !important;
+  gap: 8px !important;
+}
+.avatar-option {
+  width: 38px !important;
+  height: 38px !important;
+}
+.divider {
+  margin: 10px 0 !important;
+}
+.google-btn {
+  padding: 10px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  margin-top: 5px !important;
+}
+.buy-btn {
+  padding: 12px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+}
+</style>
+</head>
+
+<body>
+
+<section class="login-page">
+
+<div class="login-box glass" style="position: relative; overflow: hidden;">
+
+<!-- Premium Loader Overlay -->
+<div class="loader-overlay" id="loaderOverlay">
+  <div class="success-checkmark" id="successCheckmark">✔</div>
+  <div class="ring-loader" id="ringLoader"></div>
+  <div class="loader-text" id="loaderText">Creating account...</div>
+</div>
+
+<h1>Create Account</h1>
+<p class="subtitle">Join NOIR for a premium shopping experience</p>
+
+<!-- Full Name -->
+<input type="text" id="fullname" placeholder="Full Name">
+
+<!-- Email -->
+<input type="email" id="email" placeholder="Email Address">
+
+<!-- Phone Number -->
+<input type="tel" id="phone" placeholder="Phone Number (10 Digits)">
+
+<!-- Password -->
+<div class="password-wrapper">
+  <input type="password" id="password" placeholder="Password">
+  <span class="password-toggle" id="togglePassword">👁️</span>
+</div>
+
+<!-- Password Strength Indicator -->
+<div class="strength-container" id="strengthContainer">
+  <div class="strength-bar">
+    <div class="strength-fill" id="strengthFill"></div>
+  </div>
+  <span class="strength-text" id="strengthText">Weak Password</span>
+</div>
+
+<!-- Password validation checklist -->
+<ul class="val-checklist" id="valChecklist">
+  <li class="val-item" id="chkLength"><span class="val-icon">○</span> At least 8 characters</li>
+  <li class="val-item" id="chkNumber"><span class="val-icon">○</span> Contains at least one number</li>
+  <li class="val-item" id="chkSpecial"><span class="val-icon">○</span> Contains a special character</li>
+</ul>
+
+<!-- Confirm Password -->
+<div class="password-wrapper" style="margin-top: 10px;">
+  <input type="password" id="confirmPassword" placeholder="Confirm Password">
+  <span class="password-toggle" id="toggleConfirmPassword">👁️</span>
+</div>
+
+<!-- Avatar Selection -->
+<p class="avatar-title" style="text-align: left; color: #aaa; font-size: 13px; margin: 15px 0 8px 0; font-weight: 500;">Choose a Profile Avatar:</p>
+<div class="avatar-selector" id="avatarSelector" style="display: flex; gap: 12px; margin-bottom: 20px; justify-content: space-between;">
+  <div class="avatar-option active" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" style="cursor:pointer; width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; overflow: hidden; background: #1a1a24; transition: all 0.3s;"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" style="width:100%; height:100%;"></div>
+  <div class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Aneka" style="cursor:pointer; width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; overflow: hidden; background: #1a1a24; transition: all 0.3s;"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aneka" style="width:100%; height:100%;"></div>
+  <div class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack" style="cursor:pointer; width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; overflow: hidden; background: #1a1a24; transition: all 0.3s;"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack" style="width:100%; height:100%;"></div>
+  <div class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Missy" style="cursor:pointer; width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; overflow: hidden; background: #1a1a24; transition: all 0.3s;"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Missy" style="width:100%; height:100%;"></div>
+</div>
+
+<!-- Terms & Privacy Checkbox -->
+<div style="display: flex; align-items: flex-start; gap: 8px; margin: 15px 0 20px 0; text-align: left;">
+  <input type="checkbox" id="termsCheckbox" style="width: auto !important; margin: 4px 0 0 0; cursor: pointer;">
+  <label for="termsCheckbox" style="color: #aaa; font-size: 12px; cursor: pointer; user-select: none;">
+    I agree to the <a href="#" style="color: #fff; text-decoration: underline;">Terms of Service</a> & <a href="#" style="color: #fff; text-decoration: underline;">Privacy Policy</a>
+  </label>
+</div>
+
+<button id="registerBtn" class="buy-btn">Register</button>
+
+<div class="divider">or</div>
+
+<!-- Google Register Button -->
+<button id="googleBtn" class="google-btn">
+  <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google">
+  Register with Google
+</button>
+
+<p id="msg" style="margin-top: 15px;"></p>
+
+<p class="mt-20" style="color:#aaa; font-size:14px; margin-top: 15px;">
+  Already have an account? <a href="login.html" style="color:#fff; font-weight:600; text-decoration:underline;">Login here</a>
+</p>
+
+</div>
+
+</section>
+
+<!-- OTP Verification Modal -->
+<div class="otp-modal-overlay" id="otpModalOverlay">
+  <div class="otp-box">
+    <h2>OTP Verification</h2>
+    <p class="subtitle" id="otpSubtitle">We've sent a 6-digit verification code to your email and contact number. Please enter it below.</p>
+    
+    <div class="otp-inputs" id="otpInputsContainer">
+      <input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+    </div>
+    
+    <button id="verifyOtpBtn" class="buy-btn" style="width: 100%;">Verify & Register</button>
+    <button id="cancelOtpBtn" class="google-btn" style="margin-top: 10px;">Cancel</button>
+    
+    <div class="otp-resend">
+      Didn't receive code? <span id="resendCountdown">Resend in 30s</span>
+      <a href="#" id="resendOtpBtn" style="display: none;">Resend OTP</a>
+    </div>
+  </div>
+</div>
+
+<script>
+
+// Redirect if already logged in
+if (localStorage.getItem("loggedIn") === "true") {
+  window.location.href = "index.html";
+}
+
+const btn = document.getElementById("registerBtn");
+const msg = document.getElementById("msg");
+const fullnameInput = document.getElementById("fullname");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const confirmPasswordInput = document.getElementById("confirmPassword");
+
+// Password view toggles
+const togglePassword = document.getElementById("togglePassword");
+const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+
+togglePassword.addEventListener("click", () => {
+  const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+  passwordInput.setAttribute("type", type);
+  togglePassword.innerText = type === "password" ? "👁️" : "🙈";
+});
+
+toggleConfirmPassword.addEventListener("click", () => {
+  const type = confirmPasswordInput.getAttribute("type") === "password" ? "text" : "password";
+  confirmPasswordInput.setAttribute("type", type);
+  toggleConfirmPassword.innerText = type === "password" ? "👁️" : "🙈";
+});
+
+// Password strength indicator dynamic checks
+const strengthContainer = document.getElementById("strengthContainer");
+const strengthFill = document.getElementById("strengthFill");
+const strengthText = document.getElementById("strengthText");
+const valChecklist = document.getElementById("valChecklist");
+
+const chkLength = document.getElementById("chkLength");
+const chkNumber = document.getElementById("chkNumber");
+const chkSpecial = document.getElementById("chkSpecial");
+
+passwordInput.addEventListener("focus", () => {
+  strengthContainer.style.display = "block";
+  valChecklist.style.display = "block";
+});
+
+passwordInput.addEventListener("input", () => {
+  const val = passwordInput.value;
+  let score = 0;
+
+  // Length check
+  if (val.length >= 8) {
+    score++;
+    chkLength.classList.add("valid");
+    chkLength.querySelector(".val-icon").innerText = "✔";
+  } else {
+    chkLength.classList.remove("valid");
+    chkLength.querySelector(".val-icon").innerText = "○";
+  }
+
+  // Number check
+  if (/\d/.test(val)) {
+    score++;
+    chkNumber.classList.add("valid");
+    chkNumber.querySelector(".val-icon").innerText = "✔";
+  } else {
+    chkNumber.classList.remove("valid");
+    chkNumber.querySelector(".val-icon").innerText = "○";
+  }
+
+  // Special character check
+  if (/[!@#$%^&*(),.?":{}|<>]/.test(val)) {
+    score++;
+    chkSpecial.classList.add("valid");
+    chkSpecial.querySelector(".val-icon").innerText = "✔";
+  } else {
+    chkSpecial.classList.remove("valid");
+    chkSpecial.querySelector(".val-icon").innerText = "○";
+  }
+
+  // Update Strength indicator bar and color
+  if (val.length === 0) {
+    strengthFill.style.width = "0%";
+    strengthText.innerText = "No Password";
+    strengthText.style.color = "#666";
+  } else if (score === 1) {
+    strengthFill.style.width = "33%";
+    strengthFill.style.backgroundColor = "#ff4d4d";
+    strengthText.innerText = "Weak Password";
+    strengthText.style.color = "#ff4d4d";
+  } else if (score === 2) {
+    strengthFill.style.width = "66%";
+    strengthFill.style.backgroundColor = "#ffaa00";
+    strengthText.innerText = "Medium Password";
+    strengthText.style.color = "#ffaa00";
+  } else if (score === 3) {
+    strengthFill.style.width = "100%";
+    strengthFill.style.backgroundColor = "#00ff66";
+    strengthText.innerText = "Strong Password";
+    strengthText.style.color = "#00ff66";
+  }
+});
+
+// Loader overlays
+const loaderOverlay = document.getElementById("loaderOverlay");
+const ringLoader = document.getElementById("ringLoader");
+const successCheckmark = document.getElementById("successCheckmark");
+const loaderText = document.getElementById("loaderText");
+
+function showSleekLoader(text) {
+  loaderOverlay.classList.add("active");
+  ringLoader.style.display = "block";
+  successCheckmark.style.display = "none";
+  loaderText.innerText = text;
+  loaderText.style.color = "#fff";
+}
+
+function showSleekSuccess(text) {
+  ringLoader.style.display = "none";
+  successCheckmark.style.display = "block";
+  loaderText.innerText = text;
+  loaderText.style.color = "#00ff66";
+}
+
+function hideSleekLoader() {
+  loaderOverlay.classList.remove("active");
+}
+
+// Avatar Selector interactions
+const avatarOptions = document.querySelectorAll(".avatar-option");
+let selectedAvatarUrl = "https://api.dicebear.com/7.x/adventurer/svg?seed=Felix"; // Default
+
+avatarOptions.forEach(opt => {
+  opt.addEventListener("click", () => {
+    avatarOptions.forEach(o => o.classList.remove("active"));
+    opt.classList.add("active");
+    selectedAvatarUrl = opt.getAttribute("data-url");
+  });
+});
+
+// OTP & Registration States
+let generatedOtp = "";
+let otpResendTimer = null;
+let otpResendCountdown = 30;
+
+// OTP Resend Countdown Timer
+function startOtpTimer() {
+  otpResendCountdown = 30;
+  const countdownEl = document.getElementById("resendCountdown");
+  const resendBtn = document.getElementById("resendOtpBtn");
+  
+  countdownEl.style.display = "inline";
+  resendBtn.style.display = "none";
+  countdownEl.innerText = `Resend in ${otpResendCountdown}s`;
+  
+  if (otpResendTimer) clearInterval(otpResendTimer);
+  
+  otpResendTimer = setInterval(() => {
+    otpResendCountdown--;
+    countdownEl.innerText = `Resend in ${otpResendCountdown}s`;
+    
+    if (otpResendCountdown <= 0) {
+      clearInterval(otpResendTimer);
+      countdownEl.style.display = "none";
+      resendBtn.style.display = "inline";
+    }
+  }, 1000);
+}
+
+// Generate and trigger mock SMS/Email Gateway Alert
+function sendSimulatedOtp() {
+  generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+  setTimeout(() => {
+    alert(`💬 [NOIR Gateway] Verification Code:\nYour OTP code is ${generatedOtp}. It will expire in 5 minutes.`);
+  }, 500);
+}
+
+// Focus shifts for OTP input fields
+const otpDigitInputs = document.querySelectorAll("#otpInputsContainer input");
+otpDigitInputs.forEach((input, index) => {
+  input.addEventListener("input", (e) => {
+    if (input.value && index < otpDigitInputs.length - 1) {
+      otpDigitInputs[index + 1].focus();
+    }
+  });
+  input.addEventListener("keyup", (e) => {
+    if (e.key === "Backspace" && !input.value && index > 0) {
+      otpDigitInputs[index - 1].focus();
+    }
+  });
+});
+
+// Cache inputs globally for access inside the event listener
+let pendingRegDetails = {};
+
+// Safe LocalStorage getters and setters for mock users database
+function getMockUsers() {
+  try {
+    const raw = localStorage.getItem("mock_users");
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.error("Failed to parse mock_users:", e);
+    return [];
+  }
+}
+
+function saveMockUsers(usersList) {
+  try {
+    localStorage.setItem("mock_users", JSON.stringify(usersList));
+  } catch (e) {
+    console.error("Failed to save mock_users:", e);
+  }
+}
+
+btn.addEventListener("click", () => {
+  try {
+    const name = fullnameInput.value.trim();
+    const email = emailInput.value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+    const termsCheckbox = document.getElementById("termsCheckbox");
+
+    if (!name || !email || !phone || !password || !confirmPassword) {
+      msg.innerText = "Please fill all fields!";
+      msg.style.color = "red";
+      return;
+    }
+
+    // Simple email verification regex
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      msg.innerText = "Please enter a valid email address.";
+      msg.style.color = "red";
+      return;
+    }
+
+    // 10-digit phone number check
+    if (!/^\d{10}$/.test(phone)) {
+      msg.innerText = "Please enter a valid 10-digit phone number.";
+      msg.style.color = "red";
+      return;
+    }
+
+    if (password.length < 8) {
+      msg.innerText = "Password must be at least 8 characters.";
+      msg.style.color = "red";
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      msg.innerText = "Passwords do not match.";
+      msg.style.color = "red";
+      return;
+    }
+
+    if (!termsCheckbox.checked) {
+      msg.innerText = "You must agree to the Terms of Service & Privacy Policy.";
+      msg.style.color = "red";
+      return;
+    }
+
+    // Check if account already exists using safe parsing
+    const users = getMockUsers();
+    const userExists = users.some(u => u && u.email === email);
+
+    if (userExists) {
+      msg.innerText = "An account with this email already exists.";
+      msg.style.color = "red";
+      return;
+    }
+
+    // Setup pending details
+    pendingRegDetails = { name, email, phone, password };
+    msg.innerText = "";
+
+    // Open OTP modal and trigger verification OTP code
+    document.getElementById("otpSubtitle").innerText = `We've sent a 6-digit verification code to ${email} and ${phone}. Please enter it below.`;
+    document.getElementById("otpModalOverlay").classList.add("active");
+    
+    otpDigitInputs.forEach(input => input.value = "");
+    otpDigitInputs[0].focus();
+    
+    sendSimulatedOtp();
+    startOtpTimer();
+  } catch (err) {
+    console.error("Click handler error:", err);
+    alert("Registration trigger error: " + err.message);
+  }
+});
+
+// Verify OTP Event Handler
+document.getElementById("verifyOtpBtn").addEventListener("click", () => {
+  try {
+    let enteredOtp = "";
+    otpDigitInputs.forEach(input => enteredOtp += input.value.trim());
+
+    if (enteredOtp.length < 6) {
+      alert("❌ Please enter the full 6-digit verification code.");
+      return;
+    }
+
+    if (enteredOtp !== generatedOtp) {
+      alert("❌ Invalid OTP code. Please check your SMS/Email Gateway alert and try again.");
+      return;
+    }
+
+    // Correct OTP! Complete register and save mock user.
+    document.getElementById("otpModalOverlay").classList.remove("active");
+    if (otpResendTimer) clearInterval(otpResendTimer);
+
+    showSleekLoader("Creating account...");
+
+    setTimeout(() => {
+      const users = getMockUsers();
+      const newUser = {
+        email: pendingRegDetails.email,
+        password: pendingRegDetails.password,
+        name: pendingRegDetails.name,
+        phone: pendingRegDetails.phone,
+        address: "",
+        city: "",
+        pincode: ""
+      };
+
+      users.push(newUser);
+      saveMockUsers(users);
+      localStorage.setItem("userAvatar", selectedAvatarUrl); // Save avatar link
+
+      showSleekSuccess("Account Created!");
+
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 1200);
+    }, 1000);
+  } catch (err) {
+    console.error("Verification error:", err);
+    alert("Verification process error: " + err.message);
+  }
+});
+
+// Cancel OTP Event Handler
+document.getElementById("cancelOtpBtn").addEventListener("click", () => {
+  document.getElementById("otpModalOverlay").classList.remove("active");
+  if (otpResendTimer) clearInterval(otpResendTimer);
+});
+
+// Resend OTP Event Handler
+document.getElementById("resendOtpBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  sendSimulatedOtp();
+  startOtpTimer();
+});
+
+// Google Register Click Handler
+const googleBtn = document.getElementById("googleBtn");
+if (googleBtn) {
+  googleBtn.addEventListener("click", () => {
+    try {
+      showSleekLoader("Connecting to Google Secure Sign-In...");
+      
+      setTimeout(() => {
+        const mockEmail = "shiva.google@gmail.com";
+        const mockName = "Shiva Ram";
+        const mockPhone = "9876543210";
+        
+        const users = getMockUsers();
+        const userExists = users.some(u => u && u.email === mockEmail);
+        
+        if (!userExists) {
+          users.push({
+            email: mockEmail,
+            password: "GooglePassword123!",
+            name: mockName,
+            phone: mockPhone,
+            address: "",
+            city: "",
+            pincode: ""
+          });
+          saveMockUsers(users);
+        }
+        
+        // Auto login
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("userEmail", mockEmail);
+        localStorage.setItem("userName", mockName);
+        localStorage.setItem("userAvatar", selectedAvatarUrl); // Save selected avatar link
+        
+        showSleekSuccess("Google Registration Successful!");
+        
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1200);
+      }, 1500);
+    } catch (err) {
+      console.error("Google reg error:", err);
+      alert("Google register error: " + err.message);
+    }
+  });
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NOIR | Profile Dashboard</title>
+
+<link rel="stylesheet" href="style.css?v=3.5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- Cursor Glow -->
+<div class="cursor-glow"></div>
+
+<!-- ================= NAVBAR ================= -->
+<header>
+<nav>
+<a href="index.html" class="logo">NOIR.</a>
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="products.html">Products</a></li>
+<li><a href="index.html#collections">Collections</a></li>
+<li><a href="sell.html">Sell</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+
+<!-- Wishlist Link -->
+<a href="wishlist.html" class="wishlist-icon" style="color:white; text-decoration:none; margin-left:auto; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-heart"></i>
+</a>
+
+<!-- Cart Link -->
+<a href="cart.html" class="cart-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-shopping-cart"></i>
+<span class="cart-count">0</span>
+</a>
+
+<!-- Login/Profile -->
+<div id="account-area">
+<a href="login.html" id="loginButton" class="login-btn">Login</a>
+
+<div id="profileMenu" style="display:none; position:relative;">
+<div class="profile-icon">
+<i class="fas fa-user"></i>
+</div>
+
+<div class="profile-dropdown">
+  <div style="padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+    <div class="dropdown-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #222; border: 1.5px solid rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 20px; color: #fff;">
+      <i class="fas fa-user"></i>
+    </div>
+    <h3 id="userName" style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 4px 0 0 0;">Guest</h3>
+    <p id="userEmail" style="color: #888888; font-size: 11px; margin: 0; word-break: break-all;">guest@email.com</p>
+  </div>
+  <a href="profile.html">👤 My Profile</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="wishlist.html">❤️ Wishlist</a>
+  <a href="#">⚙ Settings</a>
+  <a href="#" id="logoutBtn">🚪 Logout</a>
+</div>
+</div>
+</div>
+
+</nav>
+</header>
+
+<!-- ================= PROFILE CONTAINER ================= -->
+<section class="profile-page" style="margin-top: 120px; padding: 40px 10%; min-height: 80vh;">
+
+<h1 class="text-center">👤 My Dashboard</h1>
+<p class="text-center" style="color: #777; margin-top: 5px;">Manage your account details and delivery preferences.</p>
+
+<div style="display: flex; gap: 40px; margin-top: 40px; flex-wrap: wrap;">
+
+    <!-- LEFT: INFO CARD -->
+    <div class="glass" style="flex: 1; min-width: 320px; padding: 40px; border-radius: 20px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <div id="avatarWrapper" style="position: relative; width:120px; height:120px; border-radius:50%; cursor: pointer; overflow: hidden; margin: 0 auto;">
+            <div style="width:100%; height:100%; border-radius:50%; background:#222; border: 3px solid #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display:flex; justify-content:center; align-items:center; font-size:48px; color:#fff;">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="avatar-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease; border-radius:50%; color:#fff; font-size:12px; font-weight:600; text-align:center; padding:10px;">
+                Change Photo
+            </div>
+        </div>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;" onclick="event.stopPropagation()">
+        <h2 id="profileNameDisplay" style="margin-top: 20px; color:#fff;">Guest User</h2>
+        <p id="profileEmailDisplay" style="color:#aaa; font-size:14px; margin-top: 5px;">guest@email.com</p>
+        
+        <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px; width: 100%;">
+            <div class="glass" style="padding: 15px 20px; border-radius: 12px; background: rgba(255,255,255,0.02); display: flex; justify-content: space-between; align-items: center;">
+                <span style="color:#aaa; font-size:14px;">Total Orders</span>
+                <strong id="totalOrdersCount" style="color:#fff; font-size:18px;">0</strong>
+            </div>
+            <div class="glass" style="padding: 15px 20px; border-radius: 12px; background: rgba(255,255,255,0.02); display: flex; justify-content: space-between; align-items: center;">
+                <span style="color:#aaa; font-size:14px;">Member Status</span>
+                <strong id="memberTier" style="color:#2ecc71; font-size:16px;">Silver Member</strong>
+            </div>
+        </div>
+        
+        <a href="orders.html" class="buy-btn" style="margin-top: 30px; text-decoration: none; width: 100%; text-align: center; display: inline-block;">View Order History</a>
+    </div>
+
+    <!-- RIGHT: EDIT DETAILS -->
+    <div class="glass" style="flex: 2; min-width: 320px; padding: 40px; border-radius: 20px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+        <h2 style="color: #fff; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">Edit Personal Information</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+            <div>
+                <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">FULL NAME</label>
+                <input type="text" id="editName" placeholder="Enter Full Name" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; font-size:14px;">
+            </div>
+            <div>
+                <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">PHONE NUMBER</label>
+                <input type="text" id="editPhone" placeholder="Enter Phone Number" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; font-size:14px;">
+            </div>
+            <div style="grid-column: span 2;">
+                <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">SHIPPING ADDRESS</label>
+                <input type="text" id="editAddress" placeholder="Street Address, Apartment, Suite" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; font-size:14px;">
+            </div>
+            <div>
+                <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">CITY</label>
+                <input type="text" id="editCity" placeholder="Enter City" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; font-size:14px;">
+            </div>
+            <div>
+                <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">PINCODE</label>
+                <input type="text" id="editPincode" placeholder="6-digit Pincode" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; font-size:14px;">
+            </div>
+        </div>
+
+        <button class="buy-btn mt-40" onclick="saveProfile()" style="border:none; padding:14px 40px; font-size:16px; font-weight:600; border-radius:30px; cursor:pointer;">
+            Save Dashboard Changes
+        </button>
+    </div>
+
+</div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+<p class="copy">© 2026 NOIR Premium Store. All Rights Reserved.</p>
+</footer>
+
+<script src="script.js?v=3.5"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+    if (!isLoggedIn) {
+        alert("Please login to access your dashboard.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Populate displays
+    const email = localStorage.getItem("userEmail") || "guest@email.com";
+    const name = localStorage.getItem("userName") || email.split("@")[0];
+    const phone = localStorage.getItem("userPhone") || "";
+    const address = localStorage.getItem("userAddress") || "";
+    const city = localStorage.getItem("userCity") || "";
+    const pincode = localStorage.getItem("userPincode") || "";
+
+    document.getElementById("profileNameDisplay").innerText = name;
+    document.getElementById("profileEmailDisplay").innerText = email;
+
+    document.getElementById("editName").value = name;
+    document.getElementById("editPhone").value = phone;
+    document.getElementById("editAddress").value = address;
+    document.getElementById("editCity").value = city;
+    document.getElementById("editPincode").value = pincode;
+
+    // Load orders count
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const activeOrders = orders.filter(o => o.status !== "Cancelled");
+    document.getElementById("totalOrdersCount").innerText = activeOrders.length;
+
+    // Determine status tier based on spending
+    const totalSpent = activeOrders.reduce((sum, o) => sum + o.total, 0);
+    const tierEl = document.getElementById("memberTier");
+    if (totalSpent > 30000) {
+        tierEl.innerText = "Black Member (Elite)";
+        tierEl.style.color = "#ffd700"; // Gold color
+    } else if (totalSpent > 10000) {
+        tierEl.innerText = "Gold Member";
+        tierEl.style.color = "#d1d1d1"; // Silver/Light gray
+    } else {
+        tierEl.innerText = "Silver Member";
+        tierEl.style.color = "#a0522d"; // Bronze/Light brown
+    }
+
+    // Avatar upload handling
+    const avatarWrapper = document.getElementById("avatarWrapper");
+    const avatarOverlay = document.querySelector(".avatar-overlay");
+    const avatarInput = document.getElementById("avatarInput");
+
+    if (avatarWrapper && avatarOverlay && avatarInput) {
+        avatarWrapper.addEventListener("click", () => {
+            avatarInput.click();
+        });
+
+        avatarWrapper.addEventListener("mouseenter", () => {
+            avatarOverlay.style.opacity = "1";
+        });
+        avatarWrapper.addEventListener("mouseleave", () => {
+            avatarOverlay.style.opacity = "0";
+        });
+
+        avatarInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith("image/")) {
+                alert("Please select a valid image file!");
+                return;
+            }
+
+            // Limit to 1MB to prevent quota issues
+            if (file.size > 1024 * 1024) {
+                alert("Image size should be less than 1MB!");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const base64Data = event.target.result;
+                localStorage.setItem("userAvatar", base64Data);
+                
+                // Trigger dynamic global sync
+                if (typeof window.syncAvatar === "function") {
+                    window.syncAvatar();
+                }
+                
+                showToast("📷 Photo Updated Successfully!");
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+});
+
+function saveProfile() {
+    const name = document.getElementById("editName").value;
+    const phone = document.getElementById("editPhone").value;
+    const address = document.getElementById("editAddress").value;
+    const city = document.getElementById("editCity").value;
+    const pincode = document.getElementById("editPincode").value;
+
+    if (!name) {
+        alert("Name is required!");
+        return;
+    }
+
+    // Update session localStorage
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userPhone", phone);
+    localStorage.setItem("userAddress", address);
+    localStorage.setItem("userCity", city);
+    localStorage.setItem("userPincode", pincode);
+
+    // Sync with mock_users database
+    const email = localStorage.getItem("userEmail");
+    const users = JSON.parse(localStorage.getItem("mock_users")) || [];
+    const idx = users.findIndex(u => u.email === email);
+
+    if (idx !== -1) {
+        users[idx].name = name;
+        users[idx].phone = phone;
+        users[idx].address = address;
+        users[idx].city = city;
+        users[idx].pincode = pincode;
+        localStorage.setItem("mock_users", JSON.stringify(users));
+    }
+
+    // Refresh display
+    document.getElementById("profileNameDisplay").innerText = name;
+    
+    // Sync navbar username if script.js didn't run yet
+    const userNameEl = document.getElementById("userName");
+    if (userNameEl) userNameEl.innerText = name;
+
+    showToast("💾 Profile Saved Successfully!");
+}
+</script>
+
+</body>
+</html>

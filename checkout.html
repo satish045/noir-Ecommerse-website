@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NOIR | Checkout</title>
+
+<link rel="stylesheet" href="style.css?v=3.5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+/* Payment card labels contrast fix */
+.payment-option-card {
+    color: #111 !important; /* Dark text for light mode */
+}
+.payment-option-card strong {
+    color: #111 !important;
+}
+.payment-option-card .payment-desc {
+    color: #666 !important; /* Medium-gray for light mode description */
+}
+
+/* Dark mode overrides */
+body.dark .payment-option-card {
+    color: #fff !important;
+}
+body.dark .payment-option-card strong {
+    color: #fff !important;
+}
+body.dark .payment-option-card .payment-desc {
+    color: #aaa !important;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header>
+<nav>
+<a href="index.html" class="logo">NOIR.</a>
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="products.html">Products</a></li>
+<li><a href="index.html#collections">Collections</a></li>
+<li><a href="sell.html">Sell</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+
+<!-- Wishlist Link -->
+<a href="wishlist.html" class="wishlist-icon" style="color:white; text-decoration:none; margin-left:auto; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-heart"></i>
+</a>
+
+<!-- Cart Link -->
+<a href="cart.html" class="cart-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-shopping-cart"></i>
+<span class="cart-count">0</span>
+</a>
+
+<!-- Login/Profile -->
+<div id="account-area">
+<a href="login.html" id="loginButton" class="login-btn">Login</a>
+
+<div id="profileMenu" style="display:none; position:relative;">
+<div class="profile-icon">
+<i class="fas fa-user"></i>
+</div>
+
+<div class="profile-dropdown">
+  <div style="padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+    <div class="dropdown-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #222; border: 1.5px solid rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 20px; color: #fff;">
+      <i class="fas fa-user"></i>
+    </div>
+    <h3 id="userName" style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 4px 0 0 0;">Guest</h3>
+    <p id="userEmail" style="color: #888888; font-size: 11px; margin: 0; word-break: break-all;">guest@email.com</p>
+  </div>
+  <a href="profile.html">👤 My Profile</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="wishlist.html">❤️ Wishlist</a>
+  <a href="#">⚙ Settings</a>
+  <a href="#" id="logoutBtn">🚪 Logout</a>
+</div>
+</div>
+</div>
+
+</nav>
+</header>
+
+<!-- ================= CHECKOUT ================= -->
+<section class="checkout-page">
+
+<h1 class="text-center mt-40">Secure Checkout</h1>
+
+<div class="checkout-container">
+
+<!-- LEFT: FORM -->
+<div class="checkout-form glass">
+
+<h2>Delivery Details</h2>
+
+<input type="text" id="name" placeholder="Full Name">
+<input type="text" id="address" placeholder="Full Address">
+<input type="text" id="city" placeholder="City">
+<input type="text" id="pincode" placeholder="Pincode">
+<input type="text" id="phone" placeholder="Contact Phone Number">
+<input type="email" id="email" placeholder="Email">
+
+<h2>Payment Method</h2>
+
+<div class="payment-options" style="display:flex; flex-direction:column; gap:12px; margin-top:15px; margin-bottom:20px;">
+    
+    <label class="payment-option-card glass" id="labelCod" style="display:flex; align-items:center; gap:15px; padding:15px 20px; border-radius:12px; border:2px solid #2ecc71; background:rgba(46,204,113,0.03); cursor:pointer; transition:all 0.3s ease;">
+        <input type="radio" name="payment" id="paymentCod" value="cod" checked style="accent-color:#2ecc71; width: 18px; height: 18px;" onchange="updatePaymentCardStyles()">
+        <span style="font-size:20px; color:#2ecc71; width:24px; display:inline-block; text-align:center;"><i class="fas fa-money-bill-wave"></i></span>
+        <div style="flex:1; text-align:left;">
+            <strong style="display:block; font-size:14px;">Cash on Delivery</strong>
+            <span class="payment-desc" style="font-size:11px;">Pay in cash when order is delivered.</span>
+        </div>
+    </label>
+    
+    <label class="payment-option-card glass" id="labelUpi" style="display:flex; align-items:center; gap:15px; padding:15px 20px; border-radius:12px; border:2px solid rgba(255,255,255,0.05); background:rgba(255,255,255,0.02); cursor:pointer; transition:all 0.3s ease;">
+        <input type="radio" name="payment" id="paymentUpi" value="upi" style="accent-color:#2ecc71; width: 18px; height: 18px;" onchange="updatePaymentCardStyles()">
+        <span style="font-size:20px; color:#aaa; width:24px; display:inline-block; text-align:center;"><i class="fas fa-bolt"></i></span>
+        <div style="flex:1; text-align:left;">
+            <strong style="display:block; font-size:14px;">UPI Payment (Real Scannable QR)</strong>
+            <span class="payment-desc" style="font-size:11px;">Scan dynamic QR code and transfer instantly to HDFC Bank.</span>
+        </div>
+    </label>
+    
+    <label class="payment-option-card glass" id="labelCard" style="display:flex; align-items:center; gap:15px; padding:15px 20px; border-radius:12px; border:2px solid rgba(255,255,255,0.05); background:rgba(255,255,255,0.02); cursor:pointer; transition:all 0.3s ease;">
+        <input type="radio" name="payment" id="paymentCard" value="card" style="accent-color:#2ecc71; width: 18px; height: 18px;" onchange="updatePaymentCardStyles()">
+        <span style="font-size:20px; color:#aaa; width:24px; display:inline-block; text-align:center;"><i class="fas fa-credit-card"></i></span>
+        <div style="flex:1; text-align:left;">
+            <strong style="display:block; font-size:14px;">Credit / Debit Card</strong>
+            <span class="payment-desc" style="font-size:11px;">Pay securely via simulated card terminal and SMS OTP.</span>
+        </div>
+    </label>
+</div>
+
+<button class="buy-btn mt-20" onclick="placeOrder()">
+Place Order
+</button>
+
+</div>
+
+<!-- RIGHT: ORDER SUMMARY -->
+<div class="checkout-summary glass">
+
+<h2>Order Summary</h2>
+
+<div id="orderItems"></div>
+
+<hr>
+
+<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:14px; color:#aaa;">
+    <span>Subtotal:</span>
+    <span style="color:inherit; font-weight:600;">₹<span id="summarySubtotal">0</span></span>
+</div>
+
+<div style="display:none; justify-content:space-between; margin-bottom:10px; font-size:14px; color:#2ecc71;" id="summaryDiscountRow">
+    <span>Coupon Discount (<span id="appliedCouponCode">WELCOME500</span>):</span>
+    <span>-₹<span id="summaryDiscount">0</span></span>
+</div>
+
+<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:14px; color:#aaa;">
+    <span>GST (2%):</span>
+    <span style="color:inherit; font-weight:600;">₹<span id="summaryGst">0</span></span>
+</div>
+
+<div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px; color:#aaa;" id="deliveryChargeRow">
+    <span>Delivery Charge:</span>
+    <span style="color:inherit; font-weight:600;">₹<span id="deliveryCharge">10</span></span>
+</div>
+
+<div style="margin-top:20px; margin-bottom:15px; border-top: 1px dashed rgba(255,255,255,0.05); padding-top:15px;">
+    <div style="display:flex; gap:10px;">
+        <input type="text" id="couponCode" placeholder="Enter Coupon Code" class="promo-input" style="flex:1; padding:10px; border-radius:10px; outline:none; font-size:13px; text-transform:uppercase;">
+        <button class="buy-btn" onclick="applyManualCoupon()" style="margin:0; width:auto; padding:10px 15px; font-size:13px;">Apply</button>
+    </div>
+    <div id="couponMessage" style="font-size:11px; text-align:left; margin-top:8px; display:none; font-weight:500;"></div>
+</div>
+
+<hr style="border:none; border-top:1px solid rgba(255,255,255,0.05); margin-bottom:15px;">
+
+<h3>Total: ₹<span id="totalAmount">0</span></h3>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= PAYMENT GATEWAY MODAL ================= -->
+<div id="paymentModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(15px); z-index:99999; justify-content:center; align-items:center;">
+  
+  <div class="glass" style="width:90%; max-width:480px; padding:40px; border-radius:24px; border:1px solid rgba(255,255,255,0.1); background:#111; color:#fff; position:relative; box-shadow:0 25px 50px rgba(0,0,0,0.5); text-align:center;">
+    
+    <!-- Close Button -->
+    <button onclick="closePaymentModal()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:#777; font-size:24px; cursor:pointer;">&times;</button>
+    
+    <!-- UPI View -->
+    <div id="upiView" style="display:none;">
+      <h2 style="font-size:22px; font-weight:700; margin-bottom:15px; letter-spacing:1px; color:#fff;">⚡ UPI Payment</h2>
+      <p style="color:#aaa; font-size:14px; margin-bottom:20px;">Scan this QR code with any UPI app (GPay, PhonePe, Paytm) to pay <strong style="color:#fff;">₹<span id="upiAmount">0</span></strong> directly to Godasi Dinesh Satya Sivaram.</p>
+      
+      <!-- Real Dynamic QR code img -->
+      <div style="background:#fff; padding:15px; border-radius:15px; width:220px; height:220px; margin:0 auto 20px auto; display:flex; justify-content:center; align-items:center; box-shadow:0 10px 20px rgba(0,0,0,0.3);">
+        <img id="upiQrCode" src="" style="width:100%; height:100%; object-fit:contain; image-rendering: pixelated;" alt="UPI QR Code">
+      </div>
+      
+      <p style="font-size:13px; color:#aaa; margin-bottom:20px;">UPI ID: <strong style="color:#fff;">9346810220@ikwik</strong></p>
+      
+      <div style="text-align:left; border-top:1px dashed rgba(255,255,255,0.1); padding-top:20px;">
+        <label style="font-size:11px; font-weight:600; color:#aaa; display:block; margin-bottom:5px; text-transform:uppercase;">Enter 12-Digit Transaction UTR Ref No.</label>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="upiUtr" placeholder="e.g. 6204xxxxxxxx" maxlength="12" style="flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px;">
+          <button class="buy-btn" onclick="verifyUpiPayment()" style="margin:0; width:auto; padding:12px 20px; font-size:14px; background:#2ecc71;">Verify</button>
+        </div>
+      </div>
+      
+      <div id="upiStatus" style="display:none; margin-top:20px; padding:15px; border-radius:12px; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1);">
+        <i class="fas fa-spinner fa-spin" style="font-size:20px; color:#3498db; margin-bottom:10px;"></i>
+        <p style="font-size:13px; color:#ccc;" id="upiStatusText">Checking payment details...</p>
+      </div>
+    </div>
+    
+    <!-- Card View -->
+    <div id="cardView" style="display:none; text-align:left;">
+      <h2 style="font-size:22px; font-weight:700; margin-bottom:15px; text-align:center; letter-spacing:1px; color:#fff;">💳 Card Payment</h2>
+      <p style="color:#aaa; font-size:14px; margin-bottom:25px; text-align:center;">Enter your credit/debit card details to authorize payment of <strong style="color:#fff;">₹<span id="cardAmount">0</span></strong>.</p>
+      
+      <!-- Card Fields -->
+      <div id="cardDetailsForm">
+        <div style="margin-bottom:15px;">
+          <label style="font-size:11px; font-weight:600; color:#aaa; display:block; margin-bottom:5px; text-transform:uppercase;">Cardholder Name</label>
+          <input type="text" id="cardName" placeholder="John Doe" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px;">
+        </div>
+        <div style="margin-bottom:15px;">
+          <label style="font-size:11px; font-weight:600; color:#aaa; display:block; margin-bottom:5px; text-transform:uppercase;">Card Number</label>
+          <input type="text" id="cardNumber" placeholder="4111 2222 3333 4444" maxlength="19" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px;">
+        </div>
+        <div style="display:flex; gap:20px; margin-bottom:25px;">
+          <div style="flex:1;">
+            <label style="font-size:11px; font-weight:600; color:#aaa; display:block; margin-bottom:5px; text-transform:uppercase;">Expiry Date</label>
+            <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px; text-align:center;">
+          </div>
+          <div style="flex:1;">
+            <label style="font-size:11px; font-weight:600; color:#aaa; display:block; margin-bottom:5px; text-transform:uppercase;">CVV</label>
+            <input type="password" id="cardCvv" placeholder="•••" maxlength="3" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px; text-align:center;">
+          </div>
+        </div>
+        
+        <button class="buy-btn" onclick="submitCardDetails()" style="width:100%; margin:0;">Pay Securely</button>
+      </div>
+      
+      <!-- Card OTP Verification Screen -->
+      <div id="cardOtpScreen" style="display:none; text-align:center;">
+        <i class="fas fa-shield-halved" style="font-size:40px; color:#e74c3c; margin-bottom:20px;"></i>
+        <h3 style="font-size:18px; font-weight:600; color:#fff; margin-bottom:10px;">Security Verification</h3>
+        <p style="color:#aaa; font-size:14px; margin-bottom:25px;">Enter the 6-digit One Time Password (OTP) sent to your registered mobile number ending in <strong style="color:#fff;">9910</strong>.</p>
+        
+        <div style="margin-bottom:25px;">
+          <input type="text" id="otpCode" placeholder="OTP CODE" maxlength="6" style="width:180px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:14px; border-radius:10px; color:#fff; outline:none; font-size:18px; text-align:center; font-weight:bold; letter-spacing:4px;">
+        </div>
+        
+        <div style="display:flex; justify-content:center; gap:15px;">
+          <button class="buy-btn" onclick="verifyCardOtp()" style="margin:0; width:auto; padding:12px 30px;">Verify & Pay</button>
+          <button class="buy-btn" onclick="resendOtp()" style="margin:0; width:auto; padding:12px 20px; background:rgba(255,255,255,0.1); border:none; color:#fff;">Resend</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Processing Screen -->
+    <div id="paymentLoading" style="display:none; padding:40px 0;">
+      <i class="fas fa-spinner fa-spin" style="font-size:48px; color:#fff; margin-bottom:20px;"></i>
+      <h3 style="font-size:18px; font-weight:600; color:#fff; margin-bottom:10px;">Processing Transaction...</h3>
+      <p style="color:#aaa; font-size:14px;">Please do not close this window or refresh the page.</p>
+    </div>
+    
+    <!-- Success Screen -->
+    <div id="paymentSuccess" style="display:none; padding:30px 0;">
+      <div style="width:80px; height:80px; border-radius:50%; background:#2ecc71; display:flex; justify-content:center; align-items:center; font-size:40px; color:#fff; margin:0 auto 20px auto;">
+        <i class="fas fa-check"></i>
+      </div>
+      <h2 style="font-size:24px; font-weight:700; color:#2ecc71; margin-bottom:10px;">Payment Successful!</h2>
+      <p id="successMessage" style="color:#ccc; font-size:14px; margin-bottom:15px;">Your order has been recorded.</p>
+      
+      <!-- First Payment Coupon Code display -->
+      <div id="firstOrderCouponCard" style="display:none; margin-top:20px; padding:20px; border-radius:15px; background:rgba(46,204,113,0.1); border:1px dashed #2ecc71; text-align:center;">
+        <h4 style="color:#2ecc71; font-size:15px; margin-bottom:5px;">🎁 First Payment Bonus Coupon!</h4>
+        <p style="color:#ccc; font-size:12px; margin-bottom:12px;">Enjoy 15% off on your next order:</p>
+        <div id="couponBadge" style="font-size:18px; font-weight:800; color:#fff; background:#2ecc71; padding:8px 15px; border-radius:10px; display:inline-block; letter-spacing:1px; cursor:pointer;" onclick="navigator.clipboard.writeText('NOIRFIRST15'); showToast('📋 Coupon Copied!')">NOIRFIRST15</div>
+        <span style="display:block; font-size:10px; color:#aaa; margin-top:5px;">Click to copy coupon code</span>
+      </div>
+      
+      <button class="buy-btn mt-40" onclick="redirectToOrders()" style="width:100%; margin: 20px 0 0 0;">Continue to Orders</button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+<p class="copy">© 2026 NOIR Premium Store. All Rights Reserved.</p>
+</footer>
+
+<script src="script.js?v=3.5"></script>
+
+<!-- ================= CHECKOUT SCRIPT ================= -->
+<script>
+let upiInterval = null;
+let currentOrderDetails = null;
+let appliedCoupon = null;
+
+function recalculateTotal() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cartSubtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    
+    // Check payment method
+    const paymentEl = document.querySelector('input[name="payment"]:checked');
+    const paymentMethod = paymentEl ? paymentEl.value : "cod";
+    
+    // Auto-apply WELCOME500 for first order
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    if (orders.length === 0 && !appliedCoupon) {
+        appliedCoupon = "WELCOME500";
+        const msgEl = document.getElementById("couponMessage");
+        if (msgEl) {
+            msgEl.style.display = "block";
+            msgEl.style.color = "#2ecc71";
+            msgEl.innerText = "🎁 First purchase WELCOME500 auto-applied (flat ₹500 off)!";
+        }
+    }
+    
+    // Calculate coupon discount
+    let discount = 0;
+    if (appliedCoupon === "WELCOME500") {
+        discount = Math.min(cartSubtotal, 500);
+    } else if (appliedCoupon === "NOIRFIRST15") {
+        discount = Math.round(cartSubtotal * 0.15);
+    }
+    
+    // Calculate GST (2%) on discounted subtotal
+    const taxableAmount = Math.max(0, cartSubtotal - discount);
+    const gstAmount = Math.round(taxableAmount * 0.02);
+    
+    // Calculate Delivery Charge
+    let deliveryCharge = 0;
+    if (paymentMethod === "cod") {
+        deliveryCharge = 10;
+    }
+    
+    // Update DOM
+    const subtotalEl = document.getElementById("summarySubtotal");
+    if (subtotalEl) subtotalEl.innerText = cartSubtotal;
+    
+    const discountRow = document.getElementById("summaryDiscountRow");
+    const discountEl = document.getElementById("summaryDiscount");
+    const couponCodeEl = document.getElementById("appliedCouponCode");
+    if (discount > 0) {
+        if (discountRow) discountRow.style.display = "flex";
+        if (discountEl) discountEl.innerText = discount;
+        if (couponCodeEl) couponCodeEl.innerText = appliedCoupon;
+    } else {
+        if (discountRow) discountRow.style.display = "none";
+    }
+    
+    const gstEl = document.getElementById("summaryGst");
+    if (gstEl) gstEl.innerText = gstAmount;
+    
+    const deliveryEl = document.getElementById("deliveryCharge");
+    if (deliveryEl) deliveryEl.innerText = deliveryCharge;
+    
+    const grandTotal = taxableAmount + gstAmount + deliveryCharge;
+    const totalEl = document.getElementById("totalAmount");
+    if (totalEl) totalEl.innerText = grandTotal;
+    
+    return grandTotal;
+}
+
+function applyManualCoupon() {
+    const codeInput = document.getElementById("couponCode");
+    const msgEl = document.getElementById("couponMessage");
+    if (!codeInput || !msgEl) return;
+    
+    const code = codeInput.value.trim().toUpperCase();
+    if (!code) {
+        alert("Please enter a coupon code!");
+        return;
+    }
+    
+    msgEl.style.display = "block";
+    
+    if (code === "WELCOME500") {
+        appliedCoupon = "WELCOME500";
+        msgEl.style.color = "#2ecc71";
+        msgEl.innerText = "✔ Coupon WELCOME500 applied! Flat ₹500 discount.";
+        showToast("🎟 Coupon Applied!");
+    } else if (code === "NOIRFIRST15") {
+        appliedCoupon = "NOIRFIRST15";
+        msgEl.style.color = "#2ecc71";
+        msgEl.innerText = "✔ Coupon NOIRFIRST15 applied! 15% discount.";
+        showToast("🎟 Coupon Applied!");
+    } else {
+        msgEl.style.color = "#e74c3c";
+        msgEl.innerText = "❌ Invalid or expired coupon code!";
+        return;
+    }
+    
+    recalculateTotal();
+}
+
+function loadCheckout() {
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    let container = document.getElementById("orderItems");
+
+    container.innerHTML = "";
+
+    if (cart.length === 0) {
+        container.innerHTML = "<p>Your cart is empty</p>";
+        recalculateTotal();
+        return;
+    }
+
+    cart.forEach(item => {
+        container.innerHTML += `
+            <div class="flex align-center mt-20" style="gap:15px; padding-bottom:15px; border-bottom:1px solid rgba(0,0,0,0.05);">
+                <img src="${item.image || 'images/default-item.png'}" style="width:50px; height:50px; border-radius:10px; object-fit:cover; border:1px solid rgba(0,0,0,0.05); background:#222;" onerror="this.src='images/default-item.png'">
+                <div style="flex:1; text-align:left;">
+                    <h4 style="color:inherit; font-size:14px; font-weight:600; margin:0; line-height:1.3;">${item.name}</h4>
+                    <span style="color:#777; font-size:12px; display:block; margin-top:4px;">Qty: ${item.qty} × ₹${item.price}</span>
+                </div>
+                <strong style="color:inherit; font-size:14px; font-weight:700; margin-left:auto;">₹${item.price * item.qty}</strong>
+            </div>
+        `;
+    });
+
+    recalculateTotal();
+
+    // Pre-fill user profile info if logged in
+    if (localStorage.getItem("loggedIn") === "true") {
+        const userName = localStorage.getItem("userName");
+        const userAddress = localStorage.getItem("userAddress");
+        const userCity = localStorage.getItem("userCity");
+        const userPincode = localStorage.getItem("userPincode");
+        const userPhone = localStorage.getItem("userPhone");
+        const userEmail = localStorage.getItem("userEmail");
+
+        if (userName && !document.getElementById("name").value) {
+            document.getElementById("name").value = userName;
+        }
+        if (userAddress && !document.getElementById("address").value) {
+            document.getElementById("address").value = userAddress;
+        }
+        if (userCity && !document.getElementById("city").value) {
+            document.getElementById("city").value = userCity;
+        }
+        if (userPincode && !document.getElementById("pincode").value) {
+            document.getElementById("pincode").value = userPincode;
+        }
+        if (userPhone && !document.getElementById("phone").value) {
+            document.getElementById("phone").value = userPhone;
+        }
+        if (userEmail && !document.getElementById("email").value) {
+            document.getElementById("email").value = userEmail;
+        }
+    }
+    
+    // Initial style run for payment blocks
+    updatePaymentCardStyles();
+}
+
+function updatePaymentCardStyles() {
+    const isDark = document.body.classList.contains("dark");
+    const cards = document.querySelectorAll(".payment-option-card");
+    cards.forEach(card => {
+        const input = card.querySelector("input[type='radio']");
+        const icon = card.querySelector("span i");
+        if (input && input.checked) {
+            card.style.borderColor = "#2ecc71";
+            card.style.background = isDark ? "rgba(46,204,113,0.05)" : "rgba(46,204,113,0.08)";
+            if (icon) icon.style.color = "#2ecc71";
+        } else {
+            card.style.borderColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+            card.style.background = isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.01)";
+            if (icon) icon.style.color = isDark ? "#aaa" : "#555";
+        }
+    });
+    
+    // Update delivery surcharge and order total
+    recalculateTotal();
+}
+
+function placeOrder() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    let name = document.getElementById("name").value;
+    let address = document.getElementById("address").value;
+    let city = document.getElementById("city").value;
+    let pincode = document.getElementById("pincode").value;
+    let phone = document.getElementById("phone").value;
+
+    if (!name || !address || !city || !pincode || !phone) {
+        alert("Please fill required fields (Name, Address, City, Pin, and Phone)!");
+        return;
+    }
+
+    const total = recalculateTotal();
+    
+    // Check if this is the user's first order
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const isFirstOrder = orders.length === 0;
+
+    // Save order data temporarily to finalize later
+    currentOrderDetails = {
+        id: Date.now(),
+        items: cart,
+        total: total,
+        name: name,
+        phone: phone,
+        address: `${address}, ${city} - ${pincode}`,
+        date: new Date().toLocaleString(),
+        isFirstOrder: isFirstOrder
+    };
+
+    // Check payment method
+    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+    if (paymentMethod === "cod") {
+        finalizeOrderInsertion();
+        if (isFirstOrder) {
+            // First COD order coupon reward
+            let coupons = JSON.parse(localStorage.getItem("mock_coupons")) || [];
+            if (!coupons.includes("NOIRFIRST15")) {
+                coupons.push("NOIRFIRST15");
+                localStorage.setItem("mock_coupons", JSON.stringify(coupons));
+            }
+            alert("🎉 Order Placed successfully! You have received a first-payment coupon: NOIRFIRST15! View it in your rewards tab.");
+        } else {
+            alert("🎉 Order Placed Successfully!");
+        }
+        window.location.href = "orders.html";
+    } 
+    else if (paymentMethod === "upi") {
+        // Generate real UPI scannable payment link
+        const upiPayLink = `upi://pay?pa=9346810220@ikwik&pn=Godasi Dinesh Satya Sivaram&am=${total}&cu=INR&tn=Noir Order`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${encodeURIComponent(upiPayLink)}`;
+        
+        document.getElementById("upiQrCode").src = qrUrl;
+        document.getElementById("upiAmount").innerText = total;
+        
+        document.getElementById("paymentModal").style.display = "flex";
+        document.getElementById("upiView").style.display = "block";
+        document.getElementById("cardView").style.display = "none";
+        document.getElementById("paymentLoading").style.display = "none";
+        document.getElementById("paymentSuccess").style.display = "none";
+        document.getElementById("upiStatus").style.display = "none";
+        document.getElementById("upiUtr").value = "";
+    } 
+    else if (paymentMethod === "card") {
+        // Show Card modal
+        document.getElementById("cardAmount").innerText = total;
+        document.getElementById("paymentModal").style.display = "flex";
+        document.getElementById("cardView").style.display = "block";
+        document.getElementById("upiView").style.display = "none";
+        document.getElementById("paymentLoading").style.display = "none";
+        document.getElementById("paymentSuccess").style.display = "none";
+        document.getElementById("cardDetailsForm").style.display = "block";
+        document.getElementById("cardOtpScreen").style.display = "none";
+        
+        // Reset fields
+        document.getElementById("cardName").value = "";
+        document.getElementById("cardNumber").value = "";
+        document.getElementById("cardExpiry").value = "";
+        document.getElementById("cardCvv").value = "";
+        document.getElementById("otpCode").value = "";
+    }
+}
+
+// UPI SCRIPT
+function closePaymentModal() {
+    document.getElementById("paymentModal").style.display = "none";
+}
+
+function verifyUpiPayment() {
+    const utr = document.getElementById("upiUtr").value.trim();
+    if (!/^\d{12}$/.test(utr)) {
+        alert("❌ Invalid Reference Number! A UPI UTR transaction reference must be exactly 12 digits (numbers only).");
+        return;
+    }
+    
+    document.getElementById("upiStatus").style.display = "block";
+    document.getElementById("upiStatusText").innerText = "Verifying UTR Reference " + utr + " on banking networks...";
+    
+    setTimeout(() => {
+        document.getElementById("upiView").style.display = "none";
+        showSuccessScreen();
+    }, 2000);
+}
+
+// CARD SIMULATION SCRIPT
+function submitCardDetails() {
+    const cardName = document.getElementById("cardName").value;
+    const cardNumber = document.getElementById("cardNumber").value;
+    const cardExpiry = document.getElementById("cardExpiry").value;
+    const cardCvv = document.getElementById("cardCvv").value;
+    
+    if (!cardName || cardNumber.length < 16 || !cardExpiry.includes("/") || cardCvv.length < 3) {
+        alert("Please fill in valid card details! (Card number must be 16 digits, Expiry MM/YY, CVV 3 digits)");
+        return;
+    }
+    
+    document.getElementById("cardDetailsForm").style.display = "none";
+    document.getElementById("paymentLoading").style.display = "block";
+    
+    setTimeout(() => {
+        document.getElementById("paymentLoading").style.display = "none";
+        document.getElementById("cardOtpScreen").style.display = "block";
+        showToast("🔑 Mock SMS: Your OTP is 123456");
+    }, 2000);
+}
+
+function verifyCardOtp() {
+    const otp = document.getElementById("otpCode").value;
+    if (otp !== "123456" && otp !== "000000") {
+        alert("❌ Invalid OTP entered! Use 123456.");
+        return;
+    }
+    
+    document.getElementById("cardView").style.display = "none";
+    document.getElementById("paymentLoading").style.display = "block";
+    
+    setTimeout(() => {
+        document.getElementById("paymentLoading").style.display = "none";
+        showSuccessScreen();
+    }, 1500);
+}
+
+function resendOtp() {
+    showToast("🔄 OTP resent! Use 123456");
+}
+
+function showSuccessScreen() {
+    document.getElementById("paymentSuccess").style.display = "block";
+    
+    if (currentOrderDetails && currentOrderDetails.isFirstOrder) {
+        document.getElementById("firstOrderCouponCard").style.display = "block";
+        document.getElementById("successMessage").innerText = "Thank you for your first payment! You have been rewarded a bonus shopping voucher.";
+        
+        // Add coupon to mock_coupons registry
+        let coupons = JSON.parse(localStorage.getItem("mock_coupons")) || [];
+        if (!coupons.includes("NOIRFIRST15")) {
+            coupons.push("NOIRFIRST15");
+            localStorage.setItem("mock_coupons", JSON.stringify(coupons));
+        }
+    } else {
+        document.getElementById("firstOrderCouponCard").style.display = "none";
+        document.getElementById("successMessage").innerText = "Your payment was successful. Your order has been recorded.";
+    }
+}
+
+function redirectToOrders() {
+    finalizeOrderInsertion();
+}
+
+function finalizeOrderInsertion() {
+    if (!currentOrderDetails) return;
+    
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push(currentOrderDetails);
+    localStorage.setItem("orders", JSON.stringify(orders));
+    
+    localStorage.removeItem("cart");
+    closePaymentModal();
+    window.location.href = "orders.html";
+}
+
+// Auto Card format helpers
+document.addEventListener("DOMContentLoaded", () => {
+    loadCheckout();
+    
+    const cardInput = document.getElementById("cardNumber");
+    if (cardInput) {
+        cardInput.addEventListener("input", (e) => {
+            let val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let matches = val.match(/\d{4,16}/g);
+            let match = matches && matches[0] || '';
+            let parts = [];
+
+            for (let i=0, len=match.length; i<len; i+=4) {
+                parts.push(match.substring(i, i+4));
+            }
+
+            if (parts.length > 0) {
+                e.target.value = parts.join(' ');
+            } else {
+                e.target.value = val;
+            }
+        });
+    }
+
+    const expiryInput = document.getElementById("cardExpiry");
+    if (expiryInput) {
+        expiryInput.addEventListener("input", (e) => {
+            let val = e.target.value.replace(/\D/g, '');
+            if (val.length >= 2) {
+                e.target.value = val.substring(0, 2) + '/' + val.substring(2, 4);
+            } else {
+                e.target.value = val;
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>

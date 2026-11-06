@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NOIR | My Orders</title>
+
+<link rel="stylesheet" href="style.css?v=3.5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- Cursor Glow -->
+<div class="cursor-glow"></div>
+
+<!-- ================= NAVBAR ================= -->
+<header>
+<nav>
+<a href="index.html" class="logo">NOIR.</a>
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="products.html">Products</a></li>
+<li><a href="orders.html" class="active">Orders</a></li>
+<li><a href="sell.html">Sell</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+
+<!-- Wishlist Link -->
+<a href="wishlist.html" class="wishlist-icon" style="color:white; text-decoration:none; margin-left:auto; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-heart"></i>
+</a>
+
+<!-- Cart Link -->
+<a href="cart.html" class="cart-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-shopping-cart"></i>
+<span class="cart-count">0</span>
+</a>
+
+<!-- Login/Profile -->
+<div id="account-area">
+<a href="login.html" id="loginButton" class="login-btn">Login</a>
+
+<div id="profileMenu" style="display:none; position:relative;">
+<div class="profile-icon">
+<i class="fas fa-user"></i>
+</div>
+
+<div class="profile-dropdown">
+  <div style="padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+    <div class="dropdown-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #222; border: 1.5px solid rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 20px; color: #fff;">
+      <i class="fas fa-user"></i>
+    </div>
+    <h3 id="userName" style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 4px 0 0 0;">Guest</h3>
+    <p id="userEmail" style="color: #888888; font-size: 11px; margin: 0; word-break: break-all;">guest@email.com</p>
+  </div>
+  <a href="profile.html">👤 My Profile</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="wishlist.html">❤️ Wishlist</a>
+  <a href="#">⚙ Settings</a>
+  <a href="#" id="logoutBtn">🚪 Logout</a>
+</div>
+</div>
+</div>
+
+</nav>
+</header>
+
+<!-- ================= ORDERS SECTION ================= -->
+<section class="orders-page" style="margin-top: 120px; padding: 40px 10%; min-height: 80vh;">
+
+<h1 class="text-center">📦 My Orders</h1>
+
+<div class="text-center mt-20">
+<button class="buy-btn" onclick="clearOrders()" style="background:#d9534f; border:none; padding:12px 30px; font-weight:600; border-radius:30px; cursor:pointer; color:#fff;">
+Clear All Orders
+</button>
+</div>
+
+<div class="orders-container mt-40" id="ordersContainer" style="display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 40px auto 0 auto;">
+<!-- Orders will load here -->
+</div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+<p class="copy">© 2026 NOIR Premium Store. All Rights Reserved.</p>
+</footer>
+
+<script src="script.js?v=3.5"></script>
+
+<!-- ================= ORDERS SCRIPT ================= -->
+<script>
+function loadOrders() {
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    let container = document.getElementById("ordersContainer");
+
+    container.innerHTML = "";
+
+    if (orders.length === 0) {
+        container.innerHTML = `
+            <div class="glass" style="text-align:center; padding: 50px; border-radius: 20px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                <h2 style="color:#777; font-weight: 500;">
+                    📦 No orders placed yet
+                </h2>
+                <p style="color:#aaa; margin-top:10px;">Browse our collections and place an order to see it here.</p>
+                <a href="products.html" class="buy-btn" style="display:inline-block; margin-top:20px; text-decoration:none; text-align:center;">Shop Now</a>
+            </div>
+        `;
+        return;
+    }
+
+    orders.reverse().forEach(order => {
+        const orderStatus = order.status || "Processing";
+        container.innerHTML += `
+        <div class="product-card shadow-hover glass" style="padding: 30px; border-radius: 20px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); width: 100%; position: relative;">
+            <div class="product-info" style="width: 100%;">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px; margin-bottom:15px; flex-wrap: wrap; gap: 10px;">
+                    <h3>Order #${order.id}</h3>
+                    <span style="color:${orderStatus === "Cancelled" ? "#d9534f" : "#2ecc71"}; font-weight:600; background:${orderStatus === "Cancelled" ? "rgba(217,83,79,0.1)" : "rgba(46,204,113,0.1)"}; padding:5px 15px; border-radius:20px; font-size:14px;">
+                        ${orderStatus === "Cancelled" ? "🔴 Status: Cancelled" : "🟢 Status: Processing"}
+                    </span>
+                </div>
+                <p style="margin: 8px 0;"><b>Name:</b> ${order.name}</p>
+                <p style="margin: 8px 0;"><b>Delivery Address:</b> ${order.address}</p>
+                <p style="margin: 8px 0;"><b>Order Date:</b> ${order.date}</p>
+
+                <hr style="border:none; border-top: 1px dashed rgba(255,255,255,0.1); margin:15px 0;">
+
+                <h4>Items Ordered:</h4>
+                <div style="margin: 10px 0;">
+                ${order.items.map(item => `
+                    <div style="display:flex; justify-content:space-between; margin: 8px 0; color:#ccc; font-size:14px;">
+                        <span>• ${item.name} (x${item.qty})</span>
+                        <span>₹${item.price * item.qty}</span>
+                    </div>
+                `).join("")}
+                </div>
+
+                <hr style="border:none; border-top: 1px solid rgba(255,255,255,0.1); margin:15px 0;">
+
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3>Total Amount:</h3>
+                    <h2 style="color:#fff;">₹${order.total}</h2>
+                </div>
+
+                ${orderStatus !== "Cancelled" ? `
+                <div style="text-align:right; margin-top:20px;">
+                    <button class="buy-btn" onclick="cancelOrder(${order.id})" style="background:#d9534f; border:none; padding:8px 20px; font-size:13px; font-weight:600; border-radius:30px; cursor:pointer; color:#fff; width:auto;">
+                        Cancel Order
+                    </button>
+                </div>
+                ` : ""}
+            </div>
+        </div>
+        `;
+    });
+}
+
+function cancelOrder(orderId) {
+    if (!confirm("Are you sure you want to cancel this order?")) return;
+    
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const idx = orders.findIndex(o => o.id === orderId);
+    
+    if (idx !== -1) {
+        orders[idx].status = "Cancelled";
+        localStorage.setItem("orders", JSON.stringify(orders));
+        loadOrders();
+        showToast("🔴 Order Cancelled successfully");
+    }
+}
+
+function clearOrders() {
+    if (!confirm("Are you sure you want to clear all orders?")) return;
+    localStorage.removeItem("orders");
+    loadOrders();
+}
+
+document.addEventListener("DOMContentLoaded", loadOrders);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+# VS Code directories in user workspace
+cli/
+extensions/
+argv.json
+edge.log
+
+# Temporary and system files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.zip
+*.pyc
+__pycache__/

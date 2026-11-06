@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>NOIR | Login</title>
+
+<link rel="stylesheet" href="style.css?v=3.5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Add Font Awesome for standard edge/chrome icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* Password Wrapper & Toggle Styling */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: #888;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  transition: color 0.2s;
+}
+.password-toggle:hover {
+  color: #fff;
+}
+
+/* Tabs style */
+.login-tabs {
+  display: flex;
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.tab-btn {
+  flex: 1;
+  background: none !important;
+  border: none !important;
+  color: #888 !important;
+  padding: 10px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  transition: all 0.3s ease !important;
+  margin-top: 0 !important;
+}
+.tab-btn.active {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  margin: 20px 0;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.divider:not(:empty)::before {
+  margin-right: .5em;
+}
+.divider:not(:empty)::after {
+  margin-left: .5em;
+}
+.google-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 14px !important;
+  font-size: 14px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.3s ease !important;
+  margin-top: 10px;
+  width: 100%;
+}
+.google-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-2px);
+}
+.google-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Premium Loader Overlay */
+.loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.loader-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.ring-loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.05);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  margin-bottom: 20px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.loader-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.success-checkmark {
+  display: none;
+  font-size: 44px;
+  color: #00ff66;
+  margin-bottom: 15px;
+  animation: scaleIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes scaleIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+/* Google Modal Card Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.google-modal {
+  background: #131314;
+  border: 1px solid #3c4043;
+  border-radius: 28px;
+  width: 360px;
+  min-height: 480px;
+  padding: 40px 32px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  font-family: Roboto, Arial, sans-serif;
+  color: #e8eaed;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.active .google-modal {
+  transform: scale(1);
+}
+
+.google-chooser-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.google-logo-img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+}
+.google-chooser-container h2 {
+  font-size: 22px;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 6px;
+  letter-spacing: 0px;
+}
+.google-chooser-container p.sub {
+  font-size: 14.5px;
+  color: #e8eaed;
+  margin-bottom: 25px;
+}
+.google-chooser-container p.sub strong {
+  font-weight: 500;
+}
+.google-accounts-list {
+  width: 100%;
+  border-bottom: 1px solid #3c4043;
+  margin-bottom: 15px;
+}
+.google-account-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 6px;
+  border-top: 1px solid #3c4043;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s;
+}
+.google-account-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.google-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  margin-right: 12px;
+}
+.google-account-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.google-account-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #e8eaed;
+}
+.google-account-email {
+  font-size: 11.5px;
+  color: #9aa0a6;
+}
+.google-use-another {
+  display: flex;
+  align-items: center;
+  padding: 12px 6px;
+  border-top: 1px solid #3c4043;
+  cursor: pointer;
+  width: 100%;
+  color: #e8eaed;
+  transition: background 0.15s;
+}
+.google-use-another:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.google-use-another-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid #5f6368;
+  color: #8ab4f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 13px;
+}
+.google-custom-inputs {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease;
+}
+.google-input-box {
+  width: 100%;
+  background: transparent !important;
+  border: 1px solid #5f6368 !important;
+  border-radius: 4px !important;
+  padding: 14px 12px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.google-input-box:focus {
+  border-color: #8ab4f8 !important;
+}
+
+/* Spinner */
+.google-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #8ab4f8;
+  border-radius: 50%;
+  animation: google-spin 1s linear infinite;
+  margin-top: 25px;
+}
+@keyframes google-spin {
+  to { transform: rotate(360deg); }
+}
+.google-chooser-container h2 {
+  font-size: 22px;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 6px;
+  letter-spacing: 0px;
+}
+.google-chooser-container p.sub {
+  font-size: 14.5px;
+  color: #e8eaed;
+  margin-bottom: 25px;
+}
+.google-chooser-container p.sub strong {
+  font-weight: 500;
+}
+.google-accounts-list {
+  width: 100%;
+  border-bottom: 1px solid #3c4043;
+  margin-bottom: 15px;
+}
+.google-account-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 6px;
+  border-top: 1px solid #3c4043;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s;
+}
+.google-account-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.google-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  margin-right: 12px;
+}
+.google-account-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.google-account-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #e8eaed;
+}
+.google-account-email {
+  font-size: 11.5px;
+  color: #9aa0a6;
+}
+.google-use-another {
+  display: flex;
+  align-items: center;
+  padding: 12px 6px;
+  border-top: 1px solid #3c4043;
+  cursor: pointer;
+  width: 100%;
+  color: #e8eaed;
+  transition: background 0.15s;
+}
+.google-use-another:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.google-use-another-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid #5f6368;
+  color: #8ab4f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 13px;
+}
+.google-custom-inputs {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease;
+}
+.google-input-box {
+  width: 100%;
+  background: transparent !important;
+  border: 1px solid #5f6368 !important;
+  border-radius: 4px !important;
+  padding: 14px 12px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.google-input-box:focus {
+  border-color: #8ab4f8 !important;
+}
+
+/* Google styled buttons */
+.google-button-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-top: 25px;
+}
+.google-btn-link {
+  color: #8ab4f8;
+  background: none !important;
+  border: none !important;
+  font-weight: 500;
+  font-size: 13.5px;
+  cursor: pointer;
+  padding: 8px 0;
+  text-align: left;
+}
+.google-btn-link:hover {
+  color: #aecbfa;
+}
+.google-btn-blue {
+  background: #8ab4f8 !important;
+  color: #202124 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 10px 24px !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: auto !important;
+  margin-top: 0 !important;
+}
+.google-btn-blue:hover {
+  background: #aecbfa !important;
+}
+
+/* Google footer styling */
+.google-footer {
+  width: 100%;
+  max-width: 370px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  font-size: 11.5px;
+  color: #9aa0a6;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.google-footer-left {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.google-footer-left:hover {
+  color: #e8eaed;
+}
+.google-footer-links {
+  display: flex;
+  gap: 12px;
+}
+.google-footer-links a {
+  color: #9aa0a6;
+  text-decoration: none;
+}
+.google-footer-links a:hover {
+  color: #e8eaed;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<section class="login-page">
+
+<div class="login-box glass" style="position: relative; overflow: hidden;">
+
+<!-- Premium Loader Overlay -->
+<div class="loader-overlay" id="loaderOverlay">
+  <div class="success-checkmark" id="successCheckmark">✔</div>
+  <div class="ring-loader" id="ringLoader"></div>
+  <div class="loader-text" id="loaderText">Checking credentials...</div>
+</div>
+
+<h1>NOIR Login</h1>
+<p class="subtitle">Enter your credentials to access your account</p>
+
+<!-- TABS -->
+<div class="login-tabs">
+  <button id="tabPassword" class="tab-btn active">Password</button>
+  <button id="tabOTP" class="tab-btn">OTP</button>
+</div>
+
+<!-- FORM INPUTS -->
+<input type="email" id="email" placeholder="Email">
+
+<!-- Password input -->
+<div class="password-wrapper" id="passwordGroup">
+  <input type="password" id="password" placeholder="Password" style="margin-bottom: 0;">
+  <span class="password-toggle" id="togglePassword">👁️</span>
+</div>
+
+<!-- OTP input group (hidden initially) -->
+<div id="otpGroup" style="display: none;">
+  <input type="text" id="otp" placeholder="Enter 6-Digit OTP">
+</div>
+
+<button id="loginBtn" class="buy-btn" style="margin-top: 20px;">Login</button>
+
+<div class="divider">or</div>
+
+<!-- Google Button -->
+<button id="googleBtn" class="google-btn">
+  <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google">
+  Continue with Google
+</button>
+
+<p id="msg"></p>
+
+<p class="mt-20" style="color:#aaa; font-size:14px;">
+  Don't have an account? <a href="register.html" style="color:#fff; font-weight:600; text-decoration:underline;">Register here</a>
+</p>
+
+</div>
+
+</section>
+
+<!-- Google Account Chooser Modal Overlay -->
+<div class="modal-overlay" id="googleModalOverlay">
+  <div class="google-modal" id="googleModalCard">
+    
+    <!-- CARD 1: Google Account Selection -->
+    <div class="google-chooser-container" id="googleSelectCard">
+      <button class="google-close-btn" id="googleCloseBtn" style="position: absolute; right: 20px; top: 20px; background: none; border: none; color: #888; font-size: 18px; cursor: pointer;">✕</button>
+      <img class="google-logo-img" src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google">
+      <h2>Choose an account</h2>
+      <p class="sub">to continue to <strong>shopVista</strong></p>
+      
+      <div class="google-accounts-list" id="googleAccountList">
+        <!-- Shiva Ram row -->
+        <div class="google-account-row" data-email="shivaram6tech@gmail.com" data-name="Shiva Ram">
+          <div class="google-avatar" style="background: #E65100;">S</div>
+          <div class="google-account-details">
+            <span class="google-account-name">Shiva Ram</span>
+            <span class="google-account-email">shivaram6tech@gmail.com</span>
+          </div>
+        </div>
+        
+        <!-- Shiva ram Shiva ram row -->
+        <div class="google-account-row" data-email="shivarams466@gmail.com" data-name="Shiva ram Shiva ram">
+          <div class="google-avatar" style="background: #004D40;">S</div>
+          <div class="google-account-details">
+            <span class="google-account-name">Shiva ram Shiva ram</span>
+            <span class="google-account-email">shivarams466@gmail.com</span>
+          </div>
+        </div>
+
+        <!-- Use another account -->
+        <div class="google-use-another" id="useAnotherAccountBtn">
+          <div class="google-use-another-icon"><i class="fa-regular fa-user"></i></div>
+          <div class="google-account-details">
+            <span class="google-account-name">Use another account</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom User Inputs -->
+      <div class="google-custom-inputs" id="customAccountInput">
+        <input type="text" id="googleCustomName" class="google-input-box" placeholder="Your Name">
+        <input type="email" id="googleCustomEmail" class="google-input-box" placeholder="Email Address">
+        <div class="google-button-row">
+          <button id="customAccountBack" class="google-btn-link">Back</button>
+          <button id="googleCustomSubmit" class="google-btn-blue">Next</button>
+        </div>
+      </div>
+
+      <!-- Google Footer -->
+      <div class="google-footer">
+        <div class="google-footer-left">
+          <span>English (United Kingdom)</span>
+          <i class="fa-solid fa-caret-down"></i>
+        </div>
+        <div class="google-footer-links">
+          <a href="#">Help</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Google Password Prompt -->
+    <div class="google-chooser-container" id="googlePasswordCard" style="display: none;">
+      <button class="google-close-btn" id="googlePasswordCloseBtn" style="position: absolute; right: 20px; top: 20px; background: none; border: none; color: #888; font-size: 18px; cursor: pointer;">✕</button>
+      <img class="google-logo-img" src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google">
+      <h2>Welcome</h2>
+      
+      <!-- User avatar badge -->
+      <div class="google-account-row" style="border: 1px solid #3c4043; border-radius: 20px; background: rgba(255,255,255,0.03); max-width: 280px; margin: 10px auto 25px auto; padding: 6px 12px; pointer-events: none;">
+        <div class="google-avatar" id="googleSelectedAvatar" style="background: #E65100; width: 22px; height: 22px; font-size: 11px;">S</div>
+        <div class="google-account-details">
+          <span class="google-account-name" id="googleSelectedName" style="font-size: 12.5px;">Shiva Ram</span>
+          <span class="google-account-email" id="googleSelectedEmail" style="font-size: 11px;">shivaram6tech@gmail.com</span>
+        </div>
+      </div>
+
+      <div style="text-align: left; width: 100%;">
+        <p style="color: #fff; font-size: 14px; margin-bottom: 12px;">To continue, first verify it's you</p>
+        
+        <div class="password-wrapper">
+          <input type="password" id="googlePasswordInput" class="google-input-box" placeholder="Enter your Google password">
+          <span class="password-toggle" id="toggleGooglePassword" style="top: 14px;">👁️</span>
+        </div>
+
+        <div class="google-button-row">
+          <button id="googlePasswordForgot" class="google-btn-link" style="font-size: 13px;">Forgot password?</button>
+          <button id="googlePasswordSubmit" class="google-btn-blue">Next</button>
+        </div>
+      </div>
+
+      <button class="google-btn-link" id="googlePasswordBackBtn" style="margin-top: 25px !important; text-align: center; width: 100%;">Back to accounts</button>
+
+      <!-- Google Footer -->
+      <div class="google-footer" style="margin-top: auto; width: 100%;">
+        <div class="google-footer-left">
+          <span>English (United Kingdom)</span>
+          <i class="fa-solid fa-caret-down"></i>
+        </div>
+        <div class="google-footer-links">
+          <a href="#">Help</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: Google Loading Spinner -->
+    <div class="google-chooser-container" id="googleLoadingCard" style="display: none; justify-content: center; align-items: center; margin-top: 40px;">
+      <img class="google-logo-img" src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google" style="margin-bottom: 25px;">
+      <h2 style="font-size: 18px; font-weight: 400; color: #fff;">Signing in...</h2>
+      <div class="google-spinner"></div>
+    </div>
+
+    <!-- CARD 4: Google Consent Confirmation -->
+    <div class="google-chooser-container" id="googleConfirmCard" style="display: none; justify-content: center; align-items: center; text-align: center; width: 100%;">
+      <button class="google-close-btn" id="googleConfirmCloseBtn" style="position: absolute; right: 20px; top: 20px; background: none; border: none; color: #888; font-size: 18px; cursor: pointer;">✕</button>
+      <img class="google-logo-img" src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google" style="margin-bottom: 20px;">
+      
+      <div style="display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 25px;">
+        <div class="google-avatar" id="googleConfirmAvatar" style="background: #E65100; width: 64px; height: 64px; font-size: 28px; margin-right: 0; margin-bottom: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600;">S</div>
+        <h2 id="googleConfirmTitle" style="font-size: 20px; font-weight: 400; color: #fff; margin-bottom: 4px;">Continue as Shiva Ram</h2>
+        <span id="googleConfirmEmail" style="font-size: 13.5px; color: #9aa0a6;">shivaram6tech@gmail.com</span>
+      </div>
+
+      <button id="googleConfirmSubmitBtn" class="google-btn-blue" style="width: 100% !important; padding: 12px !important; border-radius: 20px !important; font-weight: 500; font-size: 14px; margin-bottom: 20px;">Continue as Shiva Ram</button>
+      
+      <p style="font-size: 11px; color: #9aa0a6; text-align: left; line-height: 1.5; margin-bottom: 20px; padding: 0 5px;">
+        To continue, Google will share your name, email address, language preference and profile picture with <strong>shopVista</strong>.
+      </p>
+
+      <button id="googleConfirmBackBtn" class="google-btn-link" style="font-size: 13px; text-align: center; width: 100%;">Cancel</button>
+
+      <!-- Google Footer -->
+      <div class="google-footer" style="margin-top: auto; width: 100%;">
+        <div class="google-footer-left">
+          <span>English (United Kingdom)</span>
+          <i class="fa-solid fa-caret-down"></i>
+        </div>
+        <div class="google-footer-links">
+          <a href="#">Help</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ==================== CONFIGURATION ====================
+// Set your real Google Cloud Client ID here to connect to actual Google login pop-up
+const GOOGLE_CLIENT_ID = "267220528710-sjg3mnn0ho9ihiha263nnt3solh3sukd.apps.googleusercontent.com"; 
+// ========================================================
+
+// Redirect if already logged in
+if (localStorage.getItem("loggedIn") === "true") {
+  window.location.href = "index.html";
+}
+
+const btn = document.getElementById("loginBtn");
+const msg = document.getElementById("msg");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const otpGroup = document.getElementById("otpGroup");
+const otpInput = document.getElementById("otp");
+
+// Tab toggles
+const tabPassword = document.getElementById("tabPassword");
+const tabOTP = document.getElementById("tabOTP");
+
+// Loader overlays
+const loaderOverlay = document.getElementById("loaderOverlay");
+const ringLoader = document.getElementById("ringLoader");
+const successCheckmark = document.getElementById("successCheckmark");
+const loaderText = document.getElementById("loaderText");
+
+// Password visibility toggles
+const togglePassword = document.getElementById("togglePassword");
+const toggleGooglePassword = document.getElementById("toggleGooglePassword");
+
+togglePassword.addEventListener("click", () => {
+  const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+  passwordInput.setAttribute("type", type);
+  togglePassword.innerText = type === "password" ? "👁️" : "🙈";
+});
+
+toggleGooglePassword.addEventListener("click", () => {
+  const type = googlePasswordInput.getAttribute("type") === "password" ? "text" : "password";
+  googlePasswordInput.setAttribute("type", type);
+  toggleGooglePassword.innerText = type === "password" ? "👁️" : "🙈";
+});
+
+let loginMode = "password"; // "password" or "otp"
+let generatedOTP = null;
+let otpSent = false;
+
+tabPassword.addEventListener("click", () => {
+  loginMode = "password";
+  tabPassword.classList.add("active");
+  tabOTP.classList.remove("active");
+  document.getElementById("passwordGroup").style.display = "block";
+  otpGroup.style.display = "none";
+  btn.innerText = "Login";
+  msg.innerText = "";
+});
+
+tabOTP.addEventListener("click", () => {
+  loginMode = "otp";
+  tabOTP.classList.add("active");
+  tabPassword.classList.remove("active");
+  document.getElementById("passwordGroup").style.display = "none";
+  if (!otpSent) {
+    otpGroup.style.display = "none";
+    btn.innerText = "Send OTP";
+  } else {
+    otpGroup.style.display = "block";
+    btn.innerText = "Verify & Login";
+  }
+  msg.innerText = "";
+});
+
+// Show premium glassmorphic loader
+function showSleekLoader(text) {
+  loaderOverlay.classList.add("active");
+  ringLoader.style.display = "block";
+  successCheckmark.style.display = "none";
+  loaderText.innerText = text;
+  loaderText.style.color = "#fff";
+}
+
+// Show premium success checkmark
+function showSleekSuccess(text) {
+  ringLoader.style.display = "none";
+  successCheckmark.style.display = "block";
+  loaderText.innerText = text;
+  loaderText.style.color = "#00ff66";
+}
+
+// Hide premium loader
+function hideSleekLoader() {
+  loaderOverlay.classList.remove("active");
+}
+
+// Main credentials login click handler
+btn.addEventListener("click", () => {
+  const email = emailInput.value.trim();
+
+  if (!email) {
+    msg.innerText = "Please enter your email!";
+    msg.style.color = "red";
+    return;
+  }
+
+  if (loginMode === "password") {
+    const password = passwordInput.value;
+    if (!password) {
+      msg.innerText = "Please enter your password!";
+      msg.style.color = "red";
+      return;
+    }
+
+    showSleekLoader("Authorizing credentials...");
+    msg.innerText = "";
+
+    // Simulate network latency
+    setTimeout(() => {
+      const users = JSON.parse(localStorage.getItem("mock_users")) || [];
+      const user = users.find(u => u.email === email && u.password === password);
+
+      if (!user) {
+        hideSleekLoader();
+        msg.innerText = "Invalid email or password.";
+        msg.style.color = "red";
+        return;
+      }
+
+      showSleekSuccess("Welcome Back!");
+      setTimeout(() => {
+        loginUser(user, true);
+      }, 1000);
+    }, 1200);
+
+  } else {
+    // OTP Mode
+    if (!otpSent) {
+      showSleekLoader("Generating secure code...");
+      generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+
+      fetch(`https://formsubmit.co/ajax/${email}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          _subject: "🔑 Your NOIR Verification Code",
+          name: "NOIR Authentication Service",
+          message: `Your verification code is: ${generatedOTP}\n\nThis OTP is valid for 5 minutes.`
+        })
+      })
+      .then(response => {
+        hideSleekLoader();
+        otpSent = true;
+        otpGroup.style.display = "block";
+        btn.innerText = "Verify & Login";
+        msg.innerText = `📧 OTP sent to mail! (Demo Code: ${generatedOTP})`;
+        msg.style.color = "green";
+        if (window.showToast) window.showToast("📧 Check your email for OTP!");
+      })
+      .catch(error => {
+        console.error("Error sending email:", error);
+        hideSleekLoader();
+        otpSent = true;
+        otpGroup.style.display = "block";
+        btn.innerText = "Verify & Login";
+        msg.innerText = `📧 Service offline, using fallback code. (Demo Code: ${generatedOTP})`;
+        msg.style.color = "orange";
+      });
+
+    } else {
+      const enteredOTP = otpInput.value.trim();
+      if (!enteredOTP) {
+        msg.innerText = "Please enter the OTP code!";
+        msg.style.color = "red";
+        return;
+      }
+
+      if (enteredOTP !== generatedOTP) {
+        msg.innerText = "Invalid OTP code. Please try again.";
+        msg.style.color = "red";
+        return;
+      }
+
+      showSleekLoader("Verifying secure token...");
+      msg.innerText = "";
+
+      setTimeout(() => {
+        const users = JSON.parse(localStorage.getItem("mock_users")) || [];
+        let user = users.find(u => u.email === email);
+
+        if (!user) {
+          user = {
+            email: email,
+            name: email.split("@")[0],
+            phone: "",
+            address: "",
+            city: "",
+            pincode: ""
+          };
+          users.push(user);
+          localStorage.setItem("mock_users", JSON.stringify(users));
+        }
+
+        showSleekSuccess("OTP Verified!");
+        setTimeout(() => {
+          loginUser(user, true);
+        }, 1000);
+      }, 1000);
+    }
+  }
+});
+
+// Helper function to set session flags and redirect
+function loginUser(user, alreadyLoaded = false) {
+  if (!alreadyLoaded) {
+    showSleekLoader("Syncing session...");
+  }
+  
+  localStorage.setItem("loggedIn", "true");
+  localStorage.setItem("userEmail", user.email);
+  localStorage.setItem("userName", user.name || user.email.split("@")[0]);
+  if (user.phone) localStorage.setItem("userPhone", user.phone);
+  if (user.address) localStorage.setItem("userAddress", user.address);
+  if (user.city) localStorage.setItem("userCity", user.city);
+  if (user.pincode) localStorage.setItem("userPincode", user.pincode);
+
+  if (user.email === "shivaram6tech@gmail.com") {
+    localStorage.setItem("userName", "Dinesh");
+  }
+
+  if (!alreadyLoaded) {
+    showSleekSuccess("Welcome Back!");
+  }
+
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 1000);
+}
+
+/* ================= GOOGLE MOCK BROWSER MODAL FLOW ================= */
+const googleBtn = document.getElementById("googleBtn");
+const googleModalOverlay = document.getElementById("googleModalOverlay");
+const googleCloseBtn = document.getElementById("googleCloseBtn");
+const googleAccountList = document.getElementById("googleAccountList");
+const useAnotherAccountBtn = document.getElementById("useAnotherAccountBtn");
+const customAccountInput = document.getElementById("customAccountInput");
+const customAccountBack = document.getElementById("customAccountBack");
+const googleCustomSubmit = document.getElementById("googleCustomSubmit");
+
+// Google components
+const googleSelectCard = document.getElementById("googleSelectCard");
+const googlePasswordCard = document.getElementById("googlePasswordCard");
+const googleLoadingCard = document.getElementById("googleLoadingCard");
+const googleConfirmCard = document.getElementById("googleConfirmCard");
+
+const googleSelectedAvatar = document.getElementById("googleSelectedAvatar");
+const googleSelectedName = document.getElementById("googleSelectedName");
+const googleSelectedEmail = document.getElementById("googleSelectedEmail");
+const googlePasswordInput = document.getElementById("googlePasswordInput");
+const googlePasswordSubmit = document.getElementById("googlePasswordSubmit");
+
+// Google confirmation elements
+const googleConfirmAvatar = document.getElementById("googleConfirmAvatar");
+const googleConfirmTitle = document.getElementById("googleConfirmTitle");
+const googleConfirmEmail = document.getElementById("googleConfirmEmail");
+const googleConfirmSubmitBtn = document.getElementById("googleConfirmSubmitBtn");
+
+let pendingGoogleEmail = "";
+let pendingGoogleName = "";
+
+// Open Mock Secure Browser Modal
+googleBtn.addEventListener("click", () => {
+  resetGoogleModal();
+  googleModalOverlay.classList.add("active");
+});
+
+// Close Mock Secure Browser Modal
+googleCloseBtn.addEventListener("click", () => {
+  googleModalOverlay.classList.remove("active");
+});
+
+document.getElementById("googlePasswordCloseBtn")?.addEventListener("click", () => {
+  googleModalOverlay.classList.remove("active");
+});
+
+document.getElementById("googleConfirmCloseBtn")?.addEventListener("click", () => {
+  googleModalOverlay.classList.remove("active");
+});
+
+function resetGoogleModal() {
+  googleSelectCard.style.display = "flex";
+  googlePasswordCard.style.display = "none";
+  googleLoadingCard.style.display = "none";
+  googleConfirmCard.style.display = "none";
+  customAccountInput.style.display = "none";
+  googleAccountList.style.display = "block";
+  googlePasswordInput.value = "";
+  document.getElementById("googleCustomName").value = "";
+  document.getElementById("googleCustomEmail").value = "";
+}
+
+function showGooglePasswordPrompt(email, name) {
+  pendingGoogleEmail = email;
+  pendingGoogleName = name;
+  
+  googleSelectedEmail.innerText = email;
+  googleSelectedName.innerText = name;
+  googleSelectedAvatar.innerText = name.charAt(0).toUpperCase();
+  
+  const colors = ["#E65100", "#004D40", "#4285F4", "#34A853", "#EA4335", "#F4B400"];
+  googleSelectedAvatar.style.background = colors[name.length % colors.length];
+
+  googleSelectCard.style.display = "none";
+  googlePasswordCard.style.display = "flex";
+  googlePasswordInput.focus();
+}
+
+function showGoogleConfirmPrompt(email, name) {
+  pendingGoogleEmail = email;
+  pendingGoogleName = name;
+  
+  googleConfirmEmail.innerText = email;
+  googleConfirmTitle.innerText = `Continue as ${name}`;
+  googleConfirmSubmitBtn.innerText = `Continue as ${name}`;
+  googleConfirmAvatar.innerText = name.charAt(0).toUpperCase();
+  
+  const colors = ["#E65100", "#004D40", "#4285F4", "#34A853", "#EA4335", "#F4B400"];
+  googleConfirmAvatar.style.background = colors[name.length % colors.length];
+
+  googleSelectCard.style.display = "none";
+  googlePasswordCard.style.display = "none";
+  googleConfirmCard.style.display = "flex";
+}
+
+// Function to handle Google Account Select flow based on authentication state
+function handleGoogleAccountSelect(email, name) {
+  // We check if this account has been authenticated in this browser session
+  let authenticatedEmails = JSON.parse(localStorage.getItem("authenticated_google_emails")) || [];
+  
+  // For demo convenience, let's treat shivaram6tech@gmail.com as pre-authenticated so it triggers immediate login!
+  if (email === "shivaram6tech@gmail.com") {
+    if (!authenticatedEmails.includes(email)) {
+      authenticatedEmails.push(email);
+      localStorage.setItem("authenticated_google_emails", JSON.stringify(authenticatedEmails));
+    }
+  }
+
+  if (authenticatedEmails.includes(email)) {
+    // Already authenticated on this browser! Skip password and show confirmation prompt
+    showGoogleConfirmPrompt(email, name);
+  } else {
+    // Different/New email! Prompt for Google password verification like a real site
+    showGooglePasswordPrompt(email, name);
+  }
+}
+
+// Select prefilled google account row
+document.querySelectorAll(".google-account-row[data-email]").forEach(row => {
+  row.addEventListener("click", () => {
+    const email = row.getAttribute("data-email");
+    const name = row.getAttribute("data-name");
+    handleGoogleAccountSelect(email, name);
+  });
+});
+
+// Click "Use another account"
+useAnotherAccountBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  googleAccountList.style.display = "none";
+  customAccountInput.style.display = "flex";
+});
+
+// Click "Back" inside custom account view
+customAccountBack.addEventListener("click", (e) => {
+  e.preventDefault();
+  customAccountInput.style.display = "none";
+  googleAccountList.style.display = "block";
+});
+
+// Next on Custom Account Submit
+googleCustomSubmit.addEventListener("click", () => {
+  const name = document.getElementById("googleCustomName").value.trim();
+  const email = document.getElementById("googleCustomEmail").value.trim();
+  
+  if (!name || !email) {
+    alert("Please fill in both name and email!");
+    return;
+  }
+  
+  handleGoogleAccountSelect(email, name);
+});
+
+// Back from Password Screen
+document.getElementById("googlePasswordBackBtn")?.addEventListener("click", () => {
+  resetGoogleModal();
+});
+
+// Submit password & transition to confirmation screen
+googlePasswordSubmit.addEventListener("click", () => {
+  const password = googlePasswordInput.value;
+  if (!password) {
+    alert("Please enter your Google account password to verify identity!");
+    return;
+  }
+  
+  // Save to authenticated emails in browser so next time it is remembered
+  let authenticatedEmails = JSON.parse(localStorage.getItem("authenticated_google_emails")) || [];
+  if (!authenticatedEmails.includes(pendingGoogleEmail)) {
+    authenticatedEmails.push(pendingGoogleEmail);
+    localStorage.setItem("authenticated_google_emails", JSON.stringify(authenticatedEmails));
+  }
+  
+  // Transition to confirmation consent page
+  showGoogleConfirmPrompt(pendingGoogleEmail, pendingGoogleName);
+});
+
+// Cancel from confirmation page
+document.getElementById("googleConfirmBackBtn")?.addEventListener("click", () => {
+  resetGoogleModal();
+});
+
+// Submit consent and complete login
+googleConfirmSubmitBtn.addEventListener("click", () => {
+  // Show Loading Screen
+  googleConfirmCard.style.display = "none";
+  googleLoadingCard.style.display = "flex";
+  
+  setTimeout(() => {
+    // Fade browser window out and trigger premium checkmark success on main page
+    googleModalOverlay.classList.remove("active");
+    showSleekLoader("Connecting Google Account...");
+    
+    setTimeout(() => {
+      const users = JSON.parse(localStorage.getItem("mock_users")) || [];
+      let user = users.find(u => u.email === pendingGoogleEmail);
+      
+      if (!user) {
+        user = {
+          email: pendingGoogleEmail,
+          name: pendingGoogleName,
+          phone: "",
+          address: "",
+          city: "",
+          pincode: ""
+        };
+        users.push(user);
+        localStorage.setItem("mock_users", JSON.stringify(users));
+      }
+      
+      showSleekSuccess("Google Account Connected!");
+      setTimeout(() => {
+        loginUser(user, true);
+      }, 1000);
+    }, 1200);
+  }, 1500);
+});
+</script>
+
+</body>
+</html>

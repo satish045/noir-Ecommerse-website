@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOIR | Seller Portal</title>
+<link rel="stylesheet" href="style.css?v=3.5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header>
+<nav>
+<a href="index.html" class="logo">NOIR.</a>
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="products.html">Products</a></li>
+<li><a href="index.html#collections">Collections</a></li>
+<li><a href="sell.html" class="active">Sell</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+
+<!-- Wishlist Link -->
+<a href="wishlist.html" class="wishlist-icon" style="color:white; text-decoration:none; margin-left:auto; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-heart"></i>
+</a>
+
+<!-- Cart Link -->
+<a href="cart.html" class="wishlist-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-shopping-cart"></i>
+<span class="cart-count">0</span>
+</a>
+
+<!-- Login/Profile -->
+<div id="account-area">
+<a href="login.html" id="loginButton" class="login-btn">Login</a>
+
+<div id="profileMenu" style="display:none; position:relative;">
+<div class="profile-icon">
+<i class="fas fa-user"></i>
+</div>
+
+<div class="profile-dropdown">
+  <div style="padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+    <div class="dropdown-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #222; border: 1.5px solid rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 20px; color: #fff;">
+      <i class="fas fa-user"></i>
+    </div>
+    <h3 id="userName" style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 4px 0 0 0;">Guest</h3>
+    <p id="userEmail" style="color: #888888; font-size: 11px; margin: 0; word-break: break-all;">guest@email.com</p>
+  </div>
+  <a href="profile.html">👤 My Profile</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="wishlist.html">❤️ Wishlist</a>
+  <a href="#">⚙ Settings</a>
+  <a href="#" id="logoutBtn">🚪 Logout</a>
+</div>
+</div>
+</div>
+
+</nav>
+</header>
+
+<!-- ================= SELLER PORTAL ================= -->
+<section class="checkout-page" style="margin-top: 120px; padding: 40px 10%; min-height: 80vh;">
+
+<h1 class="text-center">🛍 Seller Portal</h1>
+<p class="text-center" style="color: #777; margin-top: 5px;">List your premium products for sale on the community catalog</p>
+
+<div class="checkout-container" style="display: flex; gap: 40px; margin-top: 40px; flex-wrap: wrap;">
+
+    <!-- LEFT: PRODUCT DETAILS FORM -->
+    <div class="checkout-form glass" style="flex: 1.5; min-width: 320px; padding: 40px; border-radius: 20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(0, 0, 0, 0.08); padding-bottom:12px; margin-bottom:25px;">
+            <h2 style="margin:0; border:none; padding:0;">Product Information</h2>
+            <span id="sellerTierBadge" style="color:#2ecc71; font-weight:600; background:rgba(46,204,113,0.1); padding:5px 15px; border-radius:20px; font-size:12px;">
+                Silver Member Seller
+            </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div>
+                <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">PRODUCT NAME</label>
+                <input type="text" id="prodName" placeholder="e.g. Leather Jacket" style="color:#111 !important; caret-color:#111 !important;">
+            </div>
+
+            <div>
+                <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">DESCRIPTION / DETAILS</label>
+                <textarea id="prodDetails" rows="4" placeholder="Describe your product's condition, materials, and highlights..." style="width:100%; background:rgba(0,0,0,0.02); border:1px solid rgba(0,0,0,0.08); padding:14px 18px; border-radius:10px; color:#111 !important; caret-color:#111 !important; outline:none; font-size:14px; resize:none;"></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">ORIGINAL PRICE (₹)</label>
+                    <input type="number" id="prodOriginalPrice" placeholder="e.g. 3999" min="1000" style="color:#111 !important; caret-color:#111 !important;">
+                </div>
+                <div>
+                    <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">SELLING PRICE (₹)</label>
+                    <input type="number" id="prodSellingPrice" placeholder="e.g. 2499" min="1000" oninput="calculateListingFee()" style="color:#111 !important; caret-color:#111 !important;">
+                </div>
+            </div>
+
+            <div>
+                <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:10px;">PRODUCT IMAGE OPTION</label>
+                
+                <!-- Toggle Mode tabs -->
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <button type="button" id="btnModeFile" onclick="setImageMode('file')" class="buy-btn" style="margin:0; padding:8px 15px; font-size:12px; background:#2ecc71;">Upload File</button>
+                    <button type="button" id="btnModeUrl" onclick="setImageMode('url')" class="buy-btn" style="margin:0; padding:8px 15px; font-size:12px; background:rgba(255,255,255,0.05); color:#ccc; border:1px solid rgba(255,255,255,0.1);">Image URL</button>
+                </div>
+
+                <!-- File Uploader Container -->
+                <div id="imageFileContainer" style="display:flex; gap:15px; align-items:center; flex-wrap:wrap;">
+                    <button type="button" class="buy-btn" onclick="document.getElementById('prodImageInput').click()" style="margin:0; width:auto; padding:10px 20px; font-size:13px;">
+                        Select File
+                    </button>
+                    <input type="file" id="prodImageInput" accept="image/*" style="display:none;" onchange="previewImage(event)">
+                    <span id="fileNameLabel" style="color:#777; font-size:12px;">No file selected</span>
+                </div>
+
+                <!-- URL Container -->
+                <div id="imageUrlContainer" style="display:none;">
+                    <input type="text" id="prodImageUrl" placeholder="Paste Image URL here (e.g. https://...)" oninput="previewImageUrl()" style="color:#111 !important; caret-color:#111 !important; margin-bottom:0;">
+                </div>
+
+                <div id="imagePreviewContainer" style="display:none; margin-top:15px;">
+                    <img id="prodImagePreview" src="" style="max-width:120px; max-height:120px; border-radius:12px; border:1px solid rgba(0,0,0,0.08); object-fit:cover;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT: ESTIMATE SUMMARY -->
+    <div class="checkout-summary glass" style="flex: 1; min-width: 320px; padding: 40px; border-radius: 20px; display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+            <h2>Listing Summary</h2>
+
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px; color:#aaa;">
+                <span>Selling Price:</span>
+                <span style="color:inherit; font-weight:600;">₹<span id="sumSellingPrice">0</span></span>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px; color:#aaa;">
+                <span>Estimated Discount:</span>
+                <span style="color:inherit; font-weight:600;"><span id="sumDiscount">0</span>%</span>
+            </div>
+
+            <hr style="border:none; border-top:1px dashed rgba(0,0,0,0.05); margin:15px 0;">
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:16px;">
+                <strong style="color:inherit;">Listing Fee Surcharge:</strong>
+                <h3 style="color:#2ecc71; font-weight:700; margin:0;">₹<span id="listingFeeAmount">0</span></h3>
+            </div>
+            
+            <p style="font-size:11px; color:#999; line-height:1.5; margin-top:8px;">
+                💡 Listing fees are calculated dynamically based on your selling price:<br>
+                • ₹1,000 to ₹2,500: <b>₹100 fee</b><br>
+                • ₹2,501 to ₹4,000: <b>₹200 fee</b><br>
+                • ₹4,001 to ₹5,000: <b>₹250 fee</b><br>
+                • Above ₹5,000: <b>₹300 fee</b>
+            </p>
+        </div>
+
+        <button class="buy-btn mt-40" onclick="initiateListingPayment()" style="width:100%; border:none; font-weight:600; padding:15px 0;">
+            Pay Listing Fee & Publish
+        </button>
+    </div>
+
+</div>
+
+</section>
+
+<!-- ================= LISTING FEE GATEWAY MODAL ================= -->
+<div id="listingPaymentModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(15px); z-index:99999; justify-content:center; align-items:center; padding: 20px;">
+    
+    <div class="glass" style="width:90%; max-width:550px; background:#111; border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:35px; color:#fff; text-align:center; position:relative; box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+        
+        <button onclick="closeListingModal()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:#aaa; font-size:22px; cursor:pointer;">&times;</button>
+        
+        <h2 style="font-size:22px; font-weight:700; margin-bottom:5px;">Secure Listing Fee Payment</h2>
+        <p style="color:#888; font-size:13px; margin-bottom:25px;">Pay fee to authorize product catalog listing</p>
+        
+        <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px; margin-bottom:25px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
+            <span style="color:#aaa; font-size:14px;">Total Listing Surcharge:</span>
+            <strong style="font-size:20px; color:#2ecc71;">₹<span id="gatewayListingFee">0</span></strong>
+        </div>
+
+        <!-- Vertical Aligned Payment Cards -->
+        <div style="display:flex; flex-direction:column; gap:15px; text-align:left; margin-bottom:25px;">
+            
+            <!-- UPI Option -->
+            <label class="payment-option-card" style="border: 1px solid rgba(255,255,255,0.05); background:rgba(255,255,255,0.02); padding: 18px; border-radius:15px; display:flex; align-items:center; gap:15px; cursor:pointer; transition:all 0.3s ease;">
+                <input type="radio" name="listingPayment" value="upi" checked onchange="toggleListingPaymentMethod()" style="cursor:pointer; accent-color:#2ecc71;">
+                <span style="font-size:18px;"><i class="fa-solid fa-qrcode" style="color:#aaa;"></i></span>
+                <div style="flex:1;">
+                    <strong style="display:block; font-size:14px;">UPI Payment (Dynamic QR Code)</strong>
+                    <span style="font-size:11px; color:#777; display:block; margin-top:2px;">Scan with GPay, PhonePe, or Paytm</span>
+                </div>
+            </label>
+
+            <!-- CARD Option -->
+            <label class="payment-option-card" style="border: 1px solid rgba(255,255,255,0.05); background:rgba(255,255,255,0.02); padding: 18px; border-radius:15px; display:flex; align-items:center; gap:15px; cursor:pointer; transition:all 0.3s ease;">
+                <input type="radio" name="listingPayment" value="card" onchange="toggleListingPaymentMethod()" style="cursor:pointer; accent-color:#2ecc71;">
+                <span style="font-size:18px;"><i class="fa-solid fa-credit-card" style="color:#aaa;"></i></span>
+                <div style="flex:1;">
+                    <strong style="display:block; font-size:14px;">Credit / Debit Card</strong>
+                    <span style="font-size:11px; color:#777; display:block; margin-top:2px;">Simulated checkout via bank OTP verification</span>
+                </div>
+            </label>
+        </div>
+
+        <!-- ================= UPI DETAILS SECTION ================= -->
+        <div id="listingUpiArea" style="margin-top:20px;">
+            <div id="listingQrWrapper" style="background:#fff; padding:15px; border-radius:15px; display:inline-block; margin-bottom:15px; border:2px solid #2ecc71; box-shadow:0 10px 25px rgba(0,0,0,0.15);">
+                <!-- Dynamic QR loads here -->
+            </div>
+            
+            <p style="font-size:11px; color:#aaa; margin: 10px 0 20px 0; line-height:1.5;">
+                Scan QR and pay using GPay/PhonePe.<br>
+                Payee: <b>GODASI DINESH SATYA SIVARAM</b>
+            </p>
+
+            <div style="text-align:left;">
+                <label style="color:#ccc; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">12-DIGIT TRANSACTION REF NO (UTR)</label>
+                <input type="text" id="listingUpiUtr" placeholder="e.g. 503482910394" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px; letter-spacing:1px;">
+            </div>
+
+            <button onclick="verifyListingUpi()" class="buy-btn mt-20" style="width:100%; border:none; padding:12px 0; background:#2ecc71; font-weight:600;">
+                Verify & List Product
+            </button>
+        </div>
+
+        <!-- ================= CARD DETAILS SECTION ================= -->
+        <div id="listingCardArea" style="display:none; margin-top:20px; text-align:left;">
+            
+            <div style="display:flex; flex-direction:column; gap:15px;" id="listingCardForm">
+                <div>
+                    <label style="color:#ccc; font-size:11px; font-weight:600; display:block; margin-bottom:4px;">CARDHOLDER NAME</label>
+                    <input type="text" placeholder="John Doe" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px;">
+                </div>
+                <div>
+                    <label style="color:#ccc; font-size:11px; font-weight:600; display:block; margin-bottom:4px;">CARD NUMBER</label>
+                    <input type="text" placeholder="4111 2222 3333 4444" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px; letter-spacing:2px;">
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                    <div>
+                        <label style="color:#ccc; font-size:11px; font-weight:600; display:block; margin-bottom:4px;">EXPIRY DATE</label>
+                        <input type="text" placeholder="MM/YY" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px;">
+                    </div>
+                    <div>
+                        <label style="color:#ccc; font-size:11px; font-weight:600; display:block; margin-bottom:4px;">CVV</label>
+                        <input type="password" placeholder="•••" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:14px; letter-spacing:3px;">
+                    </div>
+                </div>
+                <button onclick="sendListingCardOtp()" class="buy-btn mt-20" style="width:100%; border:none; padding:12px 0; background:#2ecc71; font-weight:600;">
+                    Get OTP Verification Code
+                </button>
+            </div>
+
+            <!-- OTP Input -->
+            <div id="listingOtpForm" style="display:none; text-align:center; padding:10px 0;">
+                <p style="font-size:13px; color:#aaa; margin-bottom:15px;">Enter the verification code sent to your banking device</p>
+                <input type="text" id="listingOtpCode" placeholder="OTP CODE" style="width:140px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:12px; border-radius:10px; color:#fff; outline:none; font-size:18px; font-weight:700; text-align:center; letter-spacing:4px; margin-bottom:20px;">
+                
+                <button onclick="verifyListingCardOtp()" class="buy-btn" style="width:100%; border:none; padding:12px 0; background:#2ecc71; font-weight:600;">
+                    Verify OTP & Publish
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+<p class="copy">© 2026 NOIR Premium Store. All Rights Reserved.</p>
+</footer>
+
+<script src="script.js?v=3.5"></script>
+
+<script>
+// Check login state
+document.addEventListener("DOMContentLoaded", () => {
+    const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+    if (!isLoggedIn) {
+        alert("Please login to list your products for sale.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    const userName = localStorage.getItem("userName") || "Member";
+    // Sync membership tier
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const activeOrders = orders.filter(o => o.status !== "Cancelled");
+    const totalSpent = activeOrders.reduce((sum, o) => sum + o.total, 0);
+    
+    let tier = "Silver Member";
+    if (totalSpent > 30000) {
+        tier = "Black Member (Elite)";
+    } else if (totalSpent > 10000) {
+        tier = "Gold Member";
+    }
+
+    const tierBadge = document.getElementById("sellerTierBadge");
+    if (tierBadge) {
+        tierBadge.innerText = `${userName}'s ${tier}`;
+        if (totalSpent > 30000) {
+            tierBadge.style.color = "#ffd700";
+            tierBadge.style.background = "rgba(255,215,0,0.1)";
+        } else if (totalSpent > 10000) {
+            tierBadge.style.color = "#d1d1d1";
+            tierBadge.style.background = "rgba(255,255,255,0.08)";
+        }
+    }
+});
+
+let base64ProductImage = "";
+
+function previewImage(event) {
+    const file = event.target.files[0];
+    const fileNameLabel = document.getElementById("fileNameLabel");
+    const previewContainer = document.getElementById("imagePreviewContainer");
+    const previewImg = document.getElementById("prodImagePreview");
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+        alert("Please select a valid image file!");
+        return;
+    }
+
+    if (file.size > 1024 * 1024) {
+        alert("Product image size must be less than 1MB!");
+        return;
+    }
+
+    fileNameLabel.innerText = file.name;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        base64ProductImage = e.target.result;
+        previewImg.src = base64ProductImage;
+        previewContainer.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+}
+
+let imageMode = "file"; // "file" or "url"
+
+function setImageMode(mode) {
+    imageMode = mode;
+    const fileContainer = document.getElementById("imageFileContainer");
+    const urlContainer = document.getElementById("imageUrlContainer");
+    const btnFile = document.getElementById("btnModeFile");
+    const btnUrl = document.getElementById("btnModeUrl");
+    const previewContainer = document.getElementById("imagePreviewContainer");
+    const previewImg = document.getElementById("prodImagePreview");
+
+    // Reset previews
+    base64ProductImage = "";
+    previewImg.src = "";
+    previewContainer.style.display = "none";
+    document.getElementById("fileNameLabel").innerText = "No file selected";
+    document.getElementById("prodImageUrl").value = "";
+
+    if (mode === "file") {
+        fileContainer.style.display = "flex";
+        urlContainer.style.display = "none";
+        btnFile.style.background = "#2ecc71";
+        btnFile.style.color = "#fff";
+        btnUrl.style.background = "rgba(255,255,255,0.05)";
+        btnUrl.style.color = "#ccc";
+        btnUrl.style.borderColor = "rgba(255,255,255,0.1)";
+    } else {
+        fileContainer.style.display = "none";
+        urlContainer.style.display = "block";
+        btnUrl.style.background = "#2ecc71";
+        btnUrl.style.color = "#fff";
+        btnFile.style.background = "rgba(255,255,255,0.05)";
+        btnFile.style.color = "#ccc";
+        btnFile.style.borderColor = "rgba(255,255,255,0.1)";
+    }
+}
+
+function previewImageUrl() {
+    const url = document.getElementById("prodImageUrl").value.trim();
+    const previewContainer = document.getElementById("imagePreviewContainer");
+    const previewImg = document.getElementById("prodImagePreview");
+
+    if (!url) {
+        previewContainer.style.display = "none";
+        previewImg.src = "";
+        base64ProductImage = "";
+        return;
+    }
+
+    base64ProductImage = url;
+    previewImg.src = url;
+    previewContainer.style.display = "block";
+}
+
+function calculateListingFee() {
+    const sellingPriceInput = document.getElementById("prodSellingPrice");
+    const sellingPrice = parseInt(sellingPriceInput.value) || 0;
+    
+    let originalPrice = parseInt(document.getElementById("prodOriginalPrice").value) || sellingPrice || 1;
+    if (originalPrice < sellingPrice) originalPrice = sellingPrice;
+
+    // Estimate discount percentage
+    const discountPct = originalPrice > 0 ? Math.round(((originalPrice - sellingPrice) / originalPrice) * 100) : 0;
+
+    // Auto Listing fee rules:
+    // • ₹1000 to ₹2500: ₹100 fee
+    // • ₹2501 to ₹4000: ₹200 fee
+    // • ₹4001 to ₹5000: ₹250 fee
+    // • Above ₹5000: ₹300 fee
+    let fee = 0;
+    if (sellingPrice >= 1000 && sellingPrice <= 2500) {
+        fee = 100;
+    } else if (sellingPrice > 2500 && sellingPrice <= 4000) {
+        fee = 200;
+    } else if (sellingPrice > 4000 && sellingPrice <= 5000) {
+        fee = 250;
+    } else if (sellingPrice > 5000) {
+        fee = 300;
+    }
+
+    document.getElementById("sumSellingPrice").innerText = sellingPrice;
+    document.getElementById("sumDiscount").innerText = Math.max(0, discountPct);
+    document.getElementById("listingFeeAmount").innerText = fee;
+
+    return fee;
+}
+
+function initiateListingPayment() {
+    const name = document.getElementById("prodName").value.trim();
+    const details = document.getElementById("prodDetails").value.trim();
+    const originalPrice = parseInt(document.getElementById("prodOriginalPrice").value) || 0;
+    const sellingPrice = parseInt(document.getElementById("prodSellingPrice").value) || 0;
+
+    if (!name || !details || originalPrice <= 0 || sellingPrice <= 0) {
+        alert("Please fill in all product details (Name, Details, Original Price, and Selling Price)!");
+        return;
+    }
+
+    if (sellingPrice < 1000) {
+        alert("The product selling price must be at least ₹1,000 to list on NOIR.");
+        return;
+    }
+
+    if (!base64ProductImage) {
+        alert("Please select a product image before listing!");
+        return;
+    }
+
+    const fee = calculateListingFee();
+    if (fee <= 0) {
+        alert("Invalid listing fee calculation!");
+        return;
+    }
+
+    // Set gateway values
+    document.getElementById("gatewayListingFee").innerText = fee;
+    
+    // Generate UPI QR Code URL
+    const upiLink = `upi://pay?pa=9346810220@ikwik&pn=Godasi%20Dinesh%20Satya%20Sivaram&am=${fee}&cu=INR&tn=Noir%20Listing%20Fee`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiLink)}`;
+    
+    document.getElementById("listingQrWrapper").innerHTML = `<img src="${qrUrl}" alt="Scan to Pay ₹${fee}">`;
+
+    // Open listing modal
+    document.getElementById("listingPaymentModal").style.display = "flex";
+    
+    // Pre-fill payment highlights
+    updateListingPaymentStyles();
+}
+
+function closeListingModal() {
+    document.getElementById("listingPaymentModal").style.display = "none";
+}
+
+function toggleListingPaymentMethod() {
+    const method = document.querySelector('input[name="listingPayment"]:checked').value;
+    const upiArea = document.getElementById("listingUpiArea");
+    const cardArea = document.getElementById("listingCardArea");
+
+    if (method === "upi") {
+        upiArea.style.display = "block";
+        cardArea.style.display = "none";
+    } else {
+        upiArea.style.display = "none";
+        cardArea.style.display = "block";
+    }
+    
+    updateListingPaymentStyles();
+}
+
+function updateListingPaymentStyles() {
+    const cards = document.querySelectorAll(".payment-option-card");
+    cards.forEach(card => {
+        const input = card.querySelector("input[type='radio']");
+        const icon = card.querySelector("span i");
+        if (input && input.checked) {
+            card.style.borderColor = "#2ecc71";
+            card.style.background = "rgba(46,204,113,0.03)";
+            if (icon) icon.style.color = "#2ecc71";
+        } else {
+            card.style.borderColor = "rgba(255,255,255,0.05)";
+            card.style.background = "rgba(255,255,255,0.02)";
+            if (icon) icon.style.color = "#aaa";
+        }
+    });
+}
+
+function verifyListingUpi() {
+    const utrInput = document.getElementById("listingUpiUtr").value.trim();
+    if (!/^\d{12}$/.test(utrInput)) {
+        alert("❌ UTR Reference Number must be exactly 12 numeric digits!");
+        return;
+    }
+
+    const btn = document.querySelector("#listingUpiArea button");
+    btn.disabled = true;
+    btn.innerText = "Verifying Transaction Reference...";
+
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.innerText = "Verify & List Product";
+        finalizeProductListing();
+    }, 2000);
+}
+
+function sendListingCardOtp() {
+    document.getElementById("listingCardForm").style.display = "none";
+    document.getElementById("listingOtpForm").style.display = "block";
+    showToast("🔑 Verification OTP code sent!");
+}
+
+function verifyListingCardOtp() {
+    const code = document.getElementById("listingOtpCode").value.trim();
+    if (code !== "123456") {
+        alert("❌ Invalid OTP verification code!");
+        return;
+    }
+    finalizeProductListing();
+}
+
+function finalizeProductListing() {
+    const name = document.getElementById("prodName").value.trim();
+    const details = document.getElementById("prodDetails").value.trim();
+    const originalPrice = parseInt(document.getElementById("prodOriginalPrice").value) || 0;
+    const sellingPrice = parseInt(document.getElementById("prodSellingPrice").value) || 0;
+    const seller = localStorage.getItem("userName") || "Dinesh";
+
+    const userProducts = JSON.parse(localStorage.getItem("mock_user_products")) || [];
+    userProducts.push({
+        id: Date.now(),
+        name: name,
+        details: details,
+        originalPrice: originalPrice,
+        sellingPrice: sellingPrice,
+        image: base64ProductImage,
+        seller: seller,
+        tag: "COMMUNITY"
+    });
+
+    localStorage.setItem("mock_user_products", JSON.stringify(userProducts));
+
+    closeListingModal();
+    
+    if (typeof window.showToast === "function") {
+        window.showToast("🎁 Product published to catalog!");
+    } else {
+        alert("🎁 Product published to catalog!");
+    }
+
+    setTimeout(() => {
+        window.location.href = "products.html";
+    }, 1200);
+}
+</script>
+
+</body>
+</html>

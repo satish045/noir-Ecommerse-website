@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NOIR | Products</title>
+
+<link rel="stylesheet" href="style.css?v=3.5">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- Cursor -->
+<div class="cursor-glow"></div>
+
+<!-- NAVBAR -->
+<header>
+<nav>
+
+<a href="index.html" class="logo">NOIR.</a>
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="products.html" class="active">Products</a></li>
+<li><a href="index.html#collections">Collections</a></li>
+<li><a href="sell.html">Sell</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+
+<!-- Search -->
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search Products...">
+<i class="fas fa-search"></i>
+</div>
+
+<!-- Wishlist Link -->
+<a href="wishlist.html" class="wishlist-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-heart"></i>
+</a>
+
+<!-- Cart Link -->
+<a href="cart.html" class="cart-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-shopping-cart"></i>
+<span class="cart-count">0</span>
+</a>
+
+<!-- Login/Profile -->
+<div id="account-area">
+<a href="login.html" id="loginButton" class="login-btn">Login</a>
+
+<div id="profileMenu" style="display:none; position:relative;">
+<div class="profile-icon">
+<i class="fas fa-user"></i>
+</div>
+
+<div class="profile-dropdown">
+  <div style="padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+    <div class="dropdown-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #222; border: 1.5px solid rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 20px; color: #fff;">
+      <i class="fas fa-user"></i>
+    </div>
+    <h3 id="userName" style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 4px 0 0 0;">Guest</h3>
+    <p id="userEmail" style="color: #888888; font-size: 11px; margin: 0; word-break: break-all;">guest@email.com</p>
+  </div>
+  <a href="profile.html">👤 My Profile</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="wishlist.html">❤️ Wishlist</a>
+  <a href="#">⚙ Settings</a>
+  <a href="#" id="logoutBtn">🚪 Logout</a>
+</div>
+</div>
+</div>
+
+</nav>
+</header>
+
+
+<!-- TITLE & PRODUCTS CONTENT -->
+<section class="product-page">
+  <section class="page-title text-center mt-40">
+    <h1>Premium Products</h1>
+    <p>Luxury Fashion • Electronics • Lifestyle</p>
+  </section>
+
+  <!-- FILTER -->
+  <section class="filter-section text-center mt-40">
+    <h2>Browse Categories</h2>
+    <div class="filter-buttons mt-20">
+      <button class="glow-btn active">All</button>
+      <button class="glow-btn">Fashion</button>
+      <button class="glow-btn">Home Use</button>
+      <button class="glow-btn">Electronics</button>
+      <button class="glow-btn">Community</button>
+    </div>
+  </section>
+
+  <!-- PRODUCTS GRID -->
+  <section class="products mt-40">
+    <div class="trend-grid" id="productsGrid">
+      <!-- Dynamic products will load here -->
+    </div>
+  </section>
+</section>
+
+
+<!-- FEATURES -->
+<section class="features mt-40">
+
+<div class="feature shadow-hover">
+<i class="fa-solid fa-truck-fast"></i>
+<h2>Fast Delivery</h2>
+<p>Quick shipping across India</p>
+</div>
+
+<div class="feature shadow-hover">
+<i class="fa-solid fa-shield-halved"></i>
+<h2>Secure Payment</h2>
+<p>100% safe transactions</p>
+</div>
+
+<div class="feature shadow-hover">
+<i class="fa-solid fa-rotate-left"></i>
+<h2>Easy Returns</h2>
+<p>7 days return policy</p>
+</div>
+
+<div class="feature shadow-hover">
+<i class="fa-solid fa-headset"></i>
+<h2>24/7 Support</h2>
+<p>Always here to help</p>
+</div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-grid">
+
+<div>
+<h3>NOIR.</h3>
+<p>Premium shopping experience.</p>
+</div>
+
+<div>
+<h4>Links</h4>
+<p>Home</p>
+<p>Products</p>
+<p>Cart</p>
+</div>
+
+<div>
+<h4>Support</h4>
+<p>Email</p>
+<p>Live Chat</p>
+</div>
+
+<div>
+<h4>Social</h4>
+<i class="fab fa-instagram"></i>
+<i class="fab fa-facebook"></i>
+<i class="fab fa-twitter"></i>
+</div>
+
+</div>
+
+<hr>
+<p class="copy">© 2026 NOIR</p>
+</footer>
+
+<script src="script.js?v=3.5"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    try {
+        const productsGrid = document.getElementById("productsGrid");
+        if (!productsGrid) return;
+
+        const allProducts = [...(window.PRODUCTS || [])];
+    
+    // Safely parse mock_user_products from localStorage
+    let userProducts = [];
+    try {
+        const rawUserProducts = localStorage.getItem("mock_user_products");
+        if (rawUserProducts) {
+            const parsed = JSON.parse(rawUserProducts);
+            if (Array.isArray(parsed)) {
+                userProducts = parsed;
+            }
+        }
+    } catch (e) {
+        console.error("Error parsing user products: ", e);
+    }
+    
+    // Format community products for uniform loading
+    const formattedUserProducts = userProducts.filter(p => p && typeof p === 'object').map((p, idx) => ({
+        id: "community_" + idx,
+        name: p.name || "Community Item",
+        category: "Community",
+        tag: p.tag || "COMMUNITY",
+        description: p.details || "",
+        price: Number(p.sellingPrice) || 0,
+        originalPrice: Number(p.originalPrice) || 0,
+        rating: 5.0,
+        reviewsCount: 1,
+        images: [p.image || 'images/default-item.png'],
+        delivery: "Free Delivery",
+        stock: "In Stock",
+        seller: p.seller || "Member"
+    }));
+
+    const totalCatalog = [...allProducts, ...formattedUserProducts];
+
+    function renderProducts(productsToRender) {
+        productsGrid.innerHTML = "";
+        
+        if (productsToRender.length === 0) {
+            productsGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #888; font-size: 16px;">No products match your criteria.</div>`;
+            return;
+        }
+
+        productsToRender.forEach(product => {
+            const discountPct = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+            const discountText = discountPct > 0 ? `<span class="discount">${discountPct}% OFF</span>` : "";
+            
+            // Build stars
+            const fullStars = Math.floor(product.rating);
+            let starsHtml = "";
+            for (let i = 0; i < 5; i++) {
+                if (i < fullStars) starsHtml += "★";
+                else starsHtml += "☆";
+            }
+
+            const sellerInfo = product.seller ? `<p style="font-size:12px; color:#aaa; margin-top:4px;">Seller: <b>${product.seller}</b></p>` : "";
+            
+            const cardHtml = `
+            <div class="product-card shadow-hover" onclick="goToDetails('${product.id}')" style="cursor: pointer;">
+                <button class="wishlist-btn" onclick="toggleWishlist(event, '${product.id}')"><i class="fa-solid fa-heart"></i></button>
+                <span class="product-tag">${product.tag || 'TRENDING'}</span>
+                
+                <img src="${product.images[0]}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=500'">
+                
+                <div class="product-info" style="text-align: left;">
+                    <h3 style="margin-top: 10px; font-size: 17px; color: #111; font-weight: 600;">${product.name}</h3>
+                    <p style="font-size: 12.5px; color: #555; margin: 6px 0;">${product.description.substring(0, 70)}...</p>
+                    
+                    <div class="rating" style="font-size: 12px; color: #ffaa00; margin-bottom: 8px;">${starsHtml} <span style="color:#777; margin-left: 4px;">(${product.rating})</span></div>
+                    
+                    <div class="price" style="font-size: 18px; font-weight: 700; color: #000;">
+                        ₹${product.price.toLocaleString("en-IN")} <span class="old-price" style="font-size: 13px; text-decoration: line-through; color: #888; margin-left: 6px;">₹${product.originalPrice.toLocaleString("en-IN")}</span>
+                        ${discountText}
+                    </div>
+                    ${sellerInfo}
+                    <p class="delivery" style="font-size: 11.5px; color: #27ae60; margin-top: 8px; font-weight: 500;">🚚 ${product.delivery}</p>
+                    
+                    <button class="buy-btn" onclick="handleAddToCart(event, '${product.id}')" style="margin-top: 12px; width: 100%;">
+                        <i class="fas fa-cart-shopping"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+            `;
+            productsGrid.insertAdjacentHTML("beforeend", cardHtml);
+        });
+    }
+    window.renderProducts = renderProducts;
+
+    // Initialize with all products
+    renderProducts(totalCatalog);
+
+    // Parse URL category and search parameters if present
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get("category");
+    if (categoryParam) {
+        const filterBtn = Array.from(document.querySelectorAll(".filter-buttons button"))
+            .find(btn => btn.innerText.trim().toLowerCase() === categoryParam.toLowerCase());
+        if (filterBtn) {
+            filterBtn.click();
+        }
+    }
+
+    const searchParam = urlParams.get("search");
+    if (searchParam) {
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) {
+            searchInput.value = searchParam;
+            const val = searchParam.toLowerCase();
+            const matched = totalCatalog.filter(p => 
+                (p.name && p.name.toLowerCase().includes(val)) || 
+                (p.description && p.description.toLowerCase().includes(val)) ||
+                (p.category && p.category.toLowerCase().includes(val))
+            );
+            renderProducts(matched);
+        }
+    }
+
+    // Global navigation handlers
+    window.goToDetails = function(id) {
+        if (id.toString().startsWith("community_")) {
+            window.location.href = `product-details.html?id=${id}`;
+        } else {
+            window.location.href = `product/product-${id}.html`;
+        }
+    };
+
+    window.handleAddToCart = function(event, id) {
+        event.stopPropagation(); // Prevent card navigation click
+        const product = totalCatalog.find(p => p.id.toString() === id.toString());
+        if (product) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const idx = cart.findIndex(item => item.name === product.name);
+            if (idx !== -1) {
+                cart[idx].qty += 1;
+            } else {
+                cart.push({
+                    name: product.name,
+                    price: product.price,
+                    image: product.images[0],
+                    qty: 1
+                });
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            
+            // Sync cart badges
+            const badges = document.querySelectorAll(".cart-count");
+            const count = cart.reduce((a, b) => a + b.qty, 0);
+            badges.forEach(b => b.innerText = count);
+
+            if (window.showToast) window.showToast("🛒 Added to Cart successfully!");
+            else alert("🛒 Added to Cart!");
+        }
+    };
+
+    window.toggleWishlist = function(event, id) {
+        event.stopPropagation();
+        const heartIcon = event.currentTarget.querySelector("i");
+        heartIcon.style.color = heartIcon.style.color === "red" ? "" : "red";
+        
+        let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+        const product = totalCatalog.find(p => p.id.toString() === id.toString());
+        
+        if (product) {
+            const idx = wishlist.findIndex(item => item.name === product.name);
+            if (idx !== -1) {
+                wishlist.splice(idx, 1);
+                if (window.showToast) window.showToast("💔 Removed from Wishlist");
+            } else {
+                wishlist.push({
+                    name: product.name,
+                    price: product.price,
+                    image: product.images[0]
+                });
+                if (window.showToast) window.showToast("❤️ Added to Wishlist");
+            }
+            localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        }
+    };
+
+    // Category button filters
+    const filterButtons = document.querySelectorAll(".filter-buttons button");
+    filterButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            filterButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            
+            const category = btn.innerText.trim();
+            if (category === "All") {
+                renderProducts(totalCatalog);
+            } else if (category === "Fashion") {
+                renderProducts(totalCatalog.filter(p => p.category === "Fashion"));
+            } else if (category === "Home Use") {
+                renderProducts(totalCatalog.filter(p => p.category === "Home Use"));
+            } else if (category === "Electronics") {
+                renderProducts(totalCatalog.filter(p => p.category === "Electronics"));
+            } else if (category === "Community") {
+                renderProducts(totalCatalog.filter(p => p.category === "Community"));
+            }
+        });
+    });
+
+        // Search logic is handled globally in script.js
+    } catch (err) {
+        console.error("Products catalog error:", err);
+        alert("Products catalog error: " + err.message);
+    }
+});
+</script>
+
+</body>
+</html>

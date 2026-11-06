@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NOIR | Loyalty Rewards</title>
+
+<link rel="stylesheet" href="style.css?v=3.5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- Cursor Glow -->
+<div class="cursor-glow"></div>
+
+<!-- ================= NAVBAR ================= -->
+<header>
+<nav>
+<a href="index.html" class="logo">NOIR.</a>
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="products.html">Products</a></li>
+<li><a href="index.html#collections">Collections</a></li>
+<li><a href="sell.html">Sell</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+
+<!-- Wishlist Link -->
+<a href="wishlist.html" class="wishlist-icon" style="color:white; text-decoration:none; margin-left:auto; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-heart"></i>
+</a>
+
+<!-- Cart Link -->
+<a href="cart.html" class="cart-icon" style="color:white; text-decoration:none; margin-right:20px; font-size:20px; position:relative; cursor:pointer;">
+<i class="fas fa-shopping-cart"></i>
+<span class="cart-count">0</span>
+</a>
+
+<!-- Login/Profile -->
+<div id="account-area">
+<a href="login.html" id="loginButton" class="login-btn">Login</a>
+
+<div id="profileMenu" style="display:none; position:relative;">
+<div class="profile-icon">
+<i class="fas fa-user"></i>
+</div>
+
+<div class="profile-dropdown">
+  <div style="padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+    <div class="dropdown-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #222; border: 1.5px solid rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 20px; color: #fff;">
+      <i class="fas fa-user"></i>
+    </div>
+    <h3 id="userName" style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 4px 0 0 0;">Guest</h3>
+    <p id="userEmail" style="color: #888888; font-size: 11px; margin: 0; word-break: break-all;">guest@email.com</p>
+  </div>
+  <a href="profile.html">👤 My Profile</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="wishlist.html">❤️ Wishlist</a>
+  <a href="#">⚙ Settings</a>
+  <a href="#" id="logoutBtn">🚪 Logout</a>
+</div>
+</div>
+</div>
+
+</nav>
+</header>
+
+<!-- ================= REWARDS CONTAINER ================= -->
+<section class="rewards-page" style="margin-top: 120px; padding: 40px 10%; min-height: 80vh;">
+
+<h1 class="text-center">🎁 Loyalty Rewards</h1>
+<p class="text-center" style="color: #777; margin-top: 5px;">Earn points as you shop and redeem them for premium discount vouchers.</p>
+
+<!-- POINTS DASHBOARD -->
+<div class="glass" style="max-width: 600px; margin: 40px auto 0 auto; padding: 40px; border-radius: 20px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); text-align: center;">
+    <h3 style="color:#aaa; font-weight:500;">Your Loyalty Points Balance</h3>
+    <h1 id="pointsDisplay" style="font-size: 64px; color:#fff; margin-top: 10px; font-weight: 800; text-shadow: 0 0 20px rgba(255,255,255,0.2);">0</h1>
+    <p style="color:#aaa; margin-top: 10px; font-size:14px;">You earn <strong>10 points for every ₹100 spent</strong> at NOIR.</p>
+</div>
+
+<!-- VOUCHERS LIST -->
+<h2 style="color: #fff; margin-top: 60px; text-align: center;">Available Reward Vouchers</h2>
+<div class="trend-grid" style="margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+
+    <!-- Voucher 1 -->
+    <div class="product-card shadow-hover glass" style="padding: 30px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+            <h3 style="font-size: 24px; color: #fff;">₹250 Discount</h3>
+            <p style="color: #ccc; margin-top: 10px;">Get flat ₹250 off on any purchase above ₹1,000.</p>
+        </div>
+        <div style="margin-top: 30px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <span style="color:#aaa;">Cost: <strong>250 Points</strong></span>
+            </div>
+            <button class="buy-btn" id="redeemBtn-250" onclick="redeemVoucher(250, 'NOIR250')" style="width:100%;">Redeem Voucher</button>
+            <div id="codeDisplay-250" style="display:none; text-align:center; padding:10px; background:rgba(46,204,113,0.1); border:1px dashed #2ecc71; color:#2ecc71; border-radius:10px; font-weight:bold; font-size:16px; margin-top:15px;">
+                CODE: <span id="codeText-250"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voucher 2 -->
+    <div class="product-card shadow-hover glass" style="padding: 30px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+            <h3 style="font-size: 24px; color: #fff;">₹500 Discount</h3>
+            <p style="color: #ccc; margin-top: 10px;">Get flat ₹500 off on any purchase above ₹2,000.</p>
+        </div>
+        <div style="margin-top: 30px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <span style="color:#aaa;">Cost: <strong>500 Points</strong></span>
+            </div>
+            <button class="buy-btn" id="redeemBtn-500" onclick="redeemVoucher(500, 'NOIR500')" style="width:100%;">Redeem Voucher</button>
+            <div id="codeDisplay-500" style="display:none; text-align:center; padding:10px; background:rgba(46,204,113,0.1); border:1px dashed #2ecc71; color:#2ecc71; border-radius:10px; font-weight:bold; font-size:16px; margin-top:15px;">
+                CODE: <span id="codeText-500"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voucher 3 -->
+    <div class="product-card shadow-hover glass" style="padding: 30px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+            <h3 style="font-size: 24px; color: #fff;">₹1,000 Discount</h3>
+            <p style="color: #ccc; margin-top: 10px;">Get flat ₹1,000 off on any purchase above ₹4,000.</p>
+        </div>
+        <div style="margin-top: 30px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <span style="color:#aaa;">Cost: <strong>1,000 Points</strong></span>
+            </div>
+            <button class="buy-btn" id="redeemBtn-1000" onclick="redeemVoucher(1000, 'NOIR1000')" style="width:100%;">Redeem Voucher</button>
+            <div id="codeDisplay-1000" style="display:none; text-align:center; padding:10px; background:rgba(46,204,113,0.1); border:1px dashed #2ecc71; color:#2ecc71; border-radius:10px; font-weight:bold; font-size:16px; margin-top:15px;">
+                CODE: <span id="codeText-1000"></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- MY EARNED VOUCHERS -->
+<h2 style="color: #fff; margin-top: 60px; text-align: center;">My Earned Vouchers</h2>
+<div class="glass" style="max-width: 600px; margin: 30px auto 0 auto; padding: 30px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+    <div id="noVouchersMessage" style="color: #aaa; text-align: center; font-size:14px; padding: 20px 0;">
+        You haven't earned any vouchers yet. Complete your first payment or redeem loyalty points above!
+    </div>
+    <div id="vouchersContainer" style="display: flex; flex-direction: column; gap: 15px;"></div>
+</div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+<p class="copy">© 2026 NOIR Premium Store. All Rights Reserved.</p>
+</footer>
+
+<script src="script.js?v=3.5"></script>
+
+<script>
+let totalPoints = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+    if (!isLoggedIn) {
+        alert("Please login to view and redeem loyalty points.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    calculatePoints();
+    loadRedeemedCoupons();
+});
+
+function calculatePoints() {
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const activeOrders = orders.filter(o => o.status !== "Cancelled");
+    const totalSpent = activeOrders.reduce((sum, o) => sum + o.total, 0);
+    
+    // Earn 10 points for every ₹100 spent (spend / 10)
+    const earnedPoints = Math.floor(totalSpent / 10);
+    const debitedPoints = parseInt(localStorage.getItem("debitedPoints")) || 0;
+    
+    totalPoints = Math.max(0, earnedPoints - debitedPoints);
+    document.getElementById("pointsDisplay").innerText = totalPoints;
+}
+
+function redeemVoucher(cost, prefix) {
+    if (totalPoints < cost) {
+        alert("❌ Insufficient points! Keep shopping to earn more points.");
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to redeem ${cost} points for this voucher?`)) return;
+
+    // Debit points
+    const debitedPoints = parseInt(localStorage.getItem("debitedPoints")) || 0;
+    localStorage.setItem("debitedPoints", debitedPoints + cost);
+
+    // Generate unique code
+    const uniqueCode = prefix + "-" + Math.random().toString(36).substr(2, 6).toUpperCase();
+
+    // Store coupon code in localStorage
+    const coupons = JSON.parse(localStorage.getItem("mock_coupons")) || [];
+    coupons.push({
+        code: uniqueCode,
+        cost: cost,
+        redeemedAt: new Date().toLocaleString()
+    });
+    localStorage.setItem("mock_coupons", JSON.stringify(coupons));
+
+    // Update displays
+    calculatePoints();
+    showRedeemedCode(cost, uniqueCode);
+    loadRedeemedCoupons();
+    showToast("🎉 Voucher Redeemed Successfully!");
+}
+
+function showRedeemedCode(cost, code) {
+    const btn = document.getElementById(`redeemBtn-${cost}`);
+    const display = document.getElementById(`codeDisplay-${cost}`);
+    const text = document.getElementById(`codeText-${cost}`);
+
+    if (btn && display && text) {
+        btn.style.display = "none";
+        display.style.display = "block";
+        text.innerText = code;
+    }
+}
+
+function loadRedeemedCoupons() {
+    const coupons = JSON.parse(localStorage.getItem("mock_coupons")) || [];
+    const container = document.getElementById("vouchersContainer");
+    const noMsg = document.getElementById("noVouchersMessage");
+    
+    if (!container) return;
+    
+    container.innerHTML = "";
+    
+    if (coupons.length === 0) {
+        if (noMsg) noMsg.style.display = "block";
+        return;
+    }
+    
+    if (noMsg) noMsg.style.display = "none";
+    
+    coupons.forEach(coupon => {
+        let code = "";
+        let details = "";
+        
+        if (typeof coupon === "string") {
+            // First purchase welcome coupon
+            code = coupon;
+            details = "First-Payment Welcome Coupon (15% Off)";
+        } else {
+            // Redeemed loyalty points voucher
+            code = coupon.code;
+            details = `Redeemed for ${coupon.cost} points on ${coupon.redeemedAt.split(',')[0]}`;
+            if (coupon.cost === 250 || coupon.cost === 500 || coupon.cost === 1000) {
+                showRedeemedCode(coupon.cost, coupon.code);
+            }
+        }
+        
+        container.innerHTML += `
+            <div class="glass" style="padding:15px 20px; border-radius:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div style="text-align:left;">
+                    <strong style="color:#2ecc71; font-size:16px; display:block; letter-spacing:0.5px;">${code}</strong>
+                    <span style="color:#aaa; font-size:12px;">${details}</span>
+                </div>
+                <button class="buy-btn" onclick="navigator.clipboard.writeText('${code}'); showToast('📋 Copied Code!')" style="margin:0; font-size:12px; width:auto; padding:8px 15px;">Copy Code</button>
+            </div>
+        `;
+    });
+}
+</script>
+
+</body>
+</html>
